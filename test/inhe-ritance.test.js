@@ -113,6 +113,27 @@ suite('2.1 Constructor arguments tests', function() {
     assert.equal(grandChildSingleton.b, 6);
     assert.equal(grandChildSingleton.c, 0);
   });
+  test('2.1.2.2 Constructor arguments can be partially stubed by childs', function() {
+    var Child = Inhe.extend(function(arg1, arg2) {
+      this.a = arg1;
+      this.b = arg2;
+    });
+
+    var GrandChild = Child.extend(5, function(arg2, arg3) {
+      this.b = arg2;
+      this.c = arg3;
+    });
+
+    var grandChild = new GrandChild(9, 'lol');
+    var grandChildSingleton = GrandChild.getInstance(8, 0);
+
+    assert.equal(grandChild.a, 5);
+    assert.equal(grandChild.b, 9);
+    assert.equal(grandChild.c, 'lol');
+    assert.equal(grandChildSingleton.a, 5);
+    assert.equal(grandChildSingleton.b, 8);
+    assert.equal(grandChildSingleton.c, 0);
+  });
 
   test('2.1.3 Constructor stubed arguments do not get confused with fn as args', function() {
     var Child = Inhe.extend(function(arg1, arg2) {
@@ -137,6 +158,26 @@ suite('2.1 Constructor arguments tests', function() {
     assert.equal(grandChildSingleton.b, 8);
     assert.equal(grandChildSingleton.c, 0);
   });
+  test('2.1.4 Constructor stubed arguments can omit ctor', function() {
+    var Child = Inhe.extend(function(arg1, arg2) {
+      this.a = arg1;
+      this.b = arg2;
+    });
+
+    var GrandChild = Child.extend(function(){this.b++;}, 6);
+
+    var grandChild = new GrandChild();
+    var grandChildSingleton = GrandChild.getInstance();
+
+    assert.isFunction(grandChild.a);
+    grandChild.a();
+    assert.equal(grandChild.b, 7);
+    assert.isFunction(grandChildSingleton.a);
+    grandChildSingleton.a();
+    grandChildSingleton.a();
+    assert.equal(grandChildSingleton.b, 8);
+  });
+
 
 });
 
@@ -304,5 +345,4 @@ suite('2.3 Mixins tests', function() {
     assert.isFunction(grandChild.add);
     assert.equal(grandChild.add(1, 1), 2);
   });
-
 });
