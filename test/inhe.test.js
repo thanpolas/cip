@@ -1,4 +1,5 @@
-var assert = require('assert');
+var chai = require('chai');
+var assert = chai.assert;
 
 var Inhe = require('../');
 
@@ -33,7 +34,6 @@ var Inhe = require('../');
 
 setup(function() {});
 teardown(function() {});
-
 
 // The numbering (e.g. 1.1.1) has nothing to do with order
 // The purpose is to provide a unique string so specific tests are
