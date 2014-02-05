@@ -1,7 +1,7 @@
 {
   "name": "inhe",
   "version": "0.0.0",
-  "main": "lib/inhe.js",
+  "main": "./inhe.js",
   "description": "Pseudoclassical Inheritance Helper",
   "homepage": "https://github.com/thanpolas/inhe",
   "bugs": "https://github.com/thanpolas/inhe/issues",

@@ -1,6 +1,6 @@
-'use strict';
+var assert = require('assert');
 
-var inhe = require('../lib/inhe.js');
+var Inhe = require('../');
 
 /*
   ======== A Handy Little Mocha Reference ========
@@ -26,11 +26,23 @@ var inhe = require('../lib/inhe.js');
     - better-assert
 */
 
-var assert = require('assert');
 
-suite('AwesomenessTest', function(){
-  test('#awesome()', function(done){
-    assert.equal(inhe.awesome(), 'awesome');
-    done();
+
+
+// var noop = function(){};
+
+setup(function() {});
+teardown(function() {});
+
+
+// The numbering (e.g. 1.1.1) has nothing to do with order
+// The purpose is to provide a unique string so specific tests are
+// run by using the mocha --grep "1.1.1" option.
+
+suite('1.1 API Surface', function() {
+  test('1.1.1 Core Methods', function() {
+    assert.isFunction(Inhe, 'Inhe core is a "constructor"');
+    assert.isFunction(Inhe.extend, 'Inhe should have an "extend" static method');
+    assert.isFunction(Inhe.getInstance, 'Inhe should have a "getInstance" static method');
   });
 });
