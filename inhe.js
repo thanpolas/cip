@@ -40,7 +40,39 @@ function calculateParentArgs(ParentCtor, extendArgs, ctorArgs) {
   var borrowArgsFromCtor = ctorArgs.slice(0, parentCtorArity - extendArgsLen);
 
   return extendArgs.concat(borrowArgsFromCtor);
+}
 
+/**
+ * Determine the parent constructor based on arguments passed to extend().
+ *
+ * @param {Array} args arguments Warning: Mutates passed array by design.
+ * @return {Inhe} a function.
+ */
+function getParentCtor(args) {
+  if (args.length && args[0]._isInhe) {
+    return args.shift();
+  } else {
+    return Inhe;
+  }
+}
+
+/**
+ * Determine the Child constructor based on arguments passed to extend().
+ *
+ * @param {Array} args arguments Warning: Mutates passed array by design.
+ * @return {Function} a ctor.
+ */
+function getChildCtor(args) {
+  var argsLen = args.length;
+  if (argsLen) {
+    if (typeof(args[argsLen -1]) === 'function') {
+      return args.pop();
+    } else {
+      return noop;
+    }
+  } else {
+    return noop;
+  }
 }
 
 /**
@@ -50,28 +82,12 @@ function calculateParentArgs(ParentCtor, extendArgs, ctorArgs) {
  * @return {Function} A child constructor.
  */
 Inhe.extend = function() {
-  var ChildCtor;
-  var ParentCtor;
 
   var args = Array.prototype.slice.call(arguments, 0);
-  var argsLen = args.length;
 
-  if (argsLen) {
-    if (typeof(args[argsLen -1]) === 'function') {
-      ChildCtor = args.pop();
-    } else {
-      ChildCtor = noop;
-    }
-  } else {
-    ChildCtor = noop;
-  }
-
-  // leverage js to determine parent constructor
-  if (ChildCtor.prototype.constructor === ChildCtor) {
-    ParentCtor = Inhe;
-  } else {
-    ParentCtor = ChildCtor.prototype.constructor;
-  }
+  // heuristics to determine child ctor and if this is a chained extend or not
+  var ParentCtor = getParentCtor(args);
+  var ChildCtor = getChildCtor(args);
 
   //
   // Inheritance
@@ -84,25 +100,16 @@ Inhe.extend = function() {
   // override constructor
   ChildCtor.prototype.constructor = function() {
     var ctorArgs = Array.prototype.slice.call(arguments, 0);
-
     var parentArgs = calculateParentArgs(ParentCtor, args, ctorArgs);
     ParentCtor.apply(this, parentArgs);
     ChildCtor.apply(this, arguments);
   };
 
   // partially apply extend to singleton instance
-  ChildCtor.extend = Inhe.extend;
+  ChildCtor.extend = Inhe.extend.bind(null, ChildCtor);
+  ChildCtor.mixin = Inhe.mixin.bind(null, ChildCtor);
+  ChildCtor.getInstance = Inhe.getInstance.bind(null, ChildCtor);
+  ChildCtor._isInhe = true;
 
-  ParentCtor.extend.bind(null, ChildCtor);
-
-  // create singleton
-  var singleton = new ChildCtor();
-
-
-  // reference prototype
-  singleton.prototype = ChildCtor.prototype;
-
-  return singleton;
-
-
+  return ChildCtor;
 };
