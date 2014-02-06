@@ -20,14 +20,14 @@ var noop = function(){};
 /**
  * Extention static function
  *
- * @param {Function} ParentCtor The parent constructor.
+ * @param {number} arity The arity of the user defined ctor function.
  * @param {Array} extendArgs Arguments passed to extend that will stub the
  *   parent's constructor arguments.
  * @param {Array} ctorArgs Arguments passed while instanciating the child ctor.
  * @return {Array} An array with the proper arguments to pass to ParentCtor.
  * @static
  */
-function calculateParentArgs(ParentCtor, extendArgs, ctorArgs) {
+function calculateParentArgs(arity, extendArgs, ctorArgs) {
   var extendArgsLen = extendArgs.length;
 
   if (extendArgsLen === 0) {
@@ -35,12 +35,11 @@ function calculateParentArgs(ParentCtor, extendArgs, ctorArgs) {
   }
 
   // check if extendArgs are enough for parent
-  var parentCtorArity = ParentCtor.length;
-  if (parentCtorArity <= extendArgsLen) {
+  if (arity <= extendArgsLen) {
     return extendArgs;
   }
 
-  var borrowArgsFromCtor = ctorArgs.slice(0, parentCtorArity - extendArgsLen);
+  var borrowArgsFromCtor = ctorArgs.slice(0, arity - extendArgsLen);
 
   return extendArgs.concat(borrowArgsFromCtor);
 }
@@ -181,7 +180,8 @@ Inhe.extend = function() {
     this.super_ = ParentCtor;
     var ctorArgs = Array.prototype.slice.call(arguments, 0);
 
-    var parentArgs = calculateParentArgs(ParentCtor, args, ctorArgs);
+    var parentArgs = calculateParentArgs(ParentCtor._inhe.UserCtor.length,
+      args, ctorArgs);
 
     // invoke parent ctor
     ParentCtor.apply(this, parentArgs);
@@ -191,7 +191,7 @@ Inhe.extend = function() {
       Mixin.apply(this, parentArgs);
     });
 
-    ChildCtor.apply(this, arguments);
+    ChildCtor.apply(this, ctorArgs);
   }
   Ctor.prototype = new TempCtor();
 
@@ -206,9 +206,8 @@ Inhe.extend = function() {
     singleton: null,
     stubbedArgs: args,
     id: generateRandomString(),
+    UserCtor: ChildCtor,
   };
-
-  // console.log('Extended:', Ctor._inhe.id, 'with:', ParentCtor._inhe.id);
 
   return Ctor;
 };
@@ -227,5 +226,7 @@ Inhe._inhe = {
   stubbedArgs: [],
   /** @type {string} A unique identifier */
   id: 'base',
+  /** @type {?Function} The user defined ctor */
+  UserCtor: noop,
 };
 

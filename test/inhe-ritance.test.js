@@ -120,7 +120,6 @@ suite('2.1 Constructor arguments tests', function() {
     });
 
     var GrandChild = Child.extend(5, function(arg2, arg3) {
-      this.b = arg2;
       this.c = arg3;
     });
 
@@ -135,7 +134,7 @@ suite('2.1 Constructor arguments tests', function() {
     assert.equal(grandChildSingleton.c, 0);
   });
 
-  test('2.1.2.2 Constructor arguments can be compositevely stubed by childs', function() {
+  test('2.1.2.3 Constructor arguments can be compositevely stubed by childs', function() {
     var Child = Inhe.extend(function(arg1, arg2) {
       this.a = arg1;
       this.b = arg2;
