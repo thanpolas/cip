@@ -1,6 +1,6 @@
 {
   "name": "inher",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "main": "./inher.js",
   "description": "Pseudoclassical Inheritance Helper",
   "homepage": "https://github.com/thanpolas/inher",
@@ -19,12 +19,16 @@
       "type": "MIT"
     }
   ],
+  "scripts": {
+    "test": "./node_modules/.bin/mocha -b test -u tdd  -R spec"
+  },
   "devDependencies": {
     "grunt-contrib-watch": "~0.5.0",
     "load-grunt-tasks": "~0.2.0",
     "time-grunt": "~0.1.1",
     "grunt-mocha-test": "~0.7.0",
-    "chai": "~1.9.0"
+    "chai": "~1.9.0",
+    "mocha": "~1.17.1"
   },
   "dependencies": {
     "sinon": "~1.8.1"
