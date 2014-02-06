@@ -52,7 +52,7 @@ function calculateParentArgs(ParentCtor, extendArgs, ctorArgs) {
  * @return {Inhe} a function.
  */
 function getParentCtor(args) {
-  if (args.length && args[0]._isInhe) {
+  if (args.length && args[0]._inhe) {
     return args.shift();
   } else {
     return Inhe;
@@ -77,52 +77,6 @@ function getChildCtor(args) {
     return noop;
   }
 }
-
-/**
- * Recursively Invoked Constructors up the inheritance chain.
- *
- * @param {Inhe} Ctor An Inhe Constructor to invoke.
- * @param {Array} stubbedArgs Stubbed arguments.
- * @param {Array} ctorArgs Arguments passed at instanciation.
- * @param {Array} store An array to use as store of invoked constructors.
- */
-function recursivelyInvokeInheritanceChain(Ctor, stubbedArgs, ctorArgs,
-  store) {
-  if (!Ctor._inhe) {
-    throw new Error('Not Inhe ctor found up in the inheritance chain');
-  }
-
-  var parentArgs = calculateParentArgs(Ctor, stubbedArgs, ctorArgs);
-  if (store.indexOf(Ctor._inhe.id) !== -1) {
-    // Last stop, everybody out.
-    if (Ctor._inhe.id === Inhe._inhe.id) {
-      return;
-    }
-    throw new Error('Infinite Loop detected on Parent ctor. Check your mixins.');
-  }
-  store.push(Ctor._inhe.id);
-
-  // invoke parent ctor
-  Ctor.apply(this, parentArgs);
-
-  // invoke all mixins and their parents up the chain
-  Ctor._inhe.mixins.forEach(function(Mixin) {
-    recursivelyInvokeInheritanceChain(Mixin, stubbedArgs, ctorArgs,
-      store);
-  });
-
-  if (Ctor.prototype.constructor !== Ctor) {
-    var NextCtor = Ctor.prototype.constructor;
-    // defence
-    if (!NextCtor._inhe) {
-      throw new Error('Not Inhe ctor found up in the inheritance chain');
-    }
-
-    recursivelyInvokeInheritanceChain(NextCtor, Ctor._inhe.stubbedArgs,
-      ctorArgs, store);
-  }
-}
-
 
 /**
  * A simple implementation to clone objects
@@ -221,30 +175,42 @@ Inhe.extend = function() {
   /** @constructor */
   function TempCtor() {}
   TempCtor.prototype = ParentCtor.prototype;
-  ChildCtor.prototype = new TempCtor();
 
-  // override constructor
-  ChildCtor.prototype.constructor = function() {
+  // Create Constructor
+  function Ctor() {
     this.super_ = ParentCtor;
     var ctorArgs = Array.prototype.slice.call(arguments, 0);
 
-    recursivelyInvokeInheritanceChain(ParentCtor, args, ctorArgs, []);
+    var parentArgs = calculateParentArgs(ParentCtor, args, ctorArgs);
+
+    // invoke parent ctor
+    ParentCtor.apply(this, parentArgs);
+
+    // invoke all mixins
+    Ctor._inhe.mixins.forEach(function(Mixin) {
+      Mixin.apply(this, parentArgs);
+    });
 
     ChildCtor.apply(this, arguments);
-  };
+  }
+  Ctor.prototype = new TempCtor();
+
+
 
   // partially apply extend to singleton instance
-  ChildCtor.extend = Inhe.extend.bind(null, ChildCtor);
-  ChildCtor.mixin = Inhe.mixin.bind(null, ChildCtor);
-  ChildCtor.getInstance = Inhe.getInstance.bind(null, ChildCtor);
-  ChildCtor._isInhe = {
+  Ctor.extend = Inhe.extend.bind(null, Ctor);
+  Ctor.mixin = Inhe.mixin.bind(null, Ctor);
+  Ctor.getInstance = Inhe.getInstance.bind(null, Ctor);
+  Ctor._inhe = {
     mixins: [],
     singleton: null,
     stubbedArgs: args,
     id: generateRandomString(),
   };
 
-  return ChildCtor;
+  // console.log('Extended:', Ctor._inhe.id, 'with:', ParentCtor._inhe.id);
+
+  return Ctor;
 };
 
 /**

@@ -43,13 +43,11 @@ suite('2.0 Constructor tests', function() {
 
   test('2.0.6 ctor "this" defined properties are inherited', function() {
     var Child = Inhe.extend(function() {
-      console.log('in');
       this.a = 1;
     });
 
     var GrandChild = Child.extend();
     var grandChild = new GrandChild();
-    console.log('grandChild:', grandChild);
     assert.property(grandChild, 'a');
     assert.equal(grandChild.a, 1);
   });
