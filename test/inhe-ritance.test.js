@@ -1,3 +1,5 @@
+/*jshint unused:false */
+/*jshint camelcase:false */
 /**
  * @fileOverview Inheritance tests
  */
@@ -241,10 +243,7 @@ suite('2.2 Inheritance tests', function() {
   test('2.2.4 parent ctor is on "super_"', function() {
     var Child = Inhe.extend();
     var GrandChild = Child.extend();
-    var grandChild = GrandChild.getInstance();
-
-    assert.equal(grandChild.super_, Child);
-    assert.equal(Child.getInstance().super_, Inhe);
+    assert.equal(GrandChild.super_, Child);
   });
 
 });

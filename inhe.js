@@ -177,7 +177,6 @@ Inhe.extend = function() {
 
   // Create Constructor
   function Ctor() {
-    this.super_ = ParentCtor;
     var ctorArgs = Array.prototype.slice.call(arguments, 0);
 
     var parentArgs = calculateParentArgs(ParentCtor._inhe.UserCtor.length,
@@ -201,6 +200,7 @@ Inhe.extend = function() {
   Ctor.extend = Inhe.extend.bind(null, Ctor);
   Ctor.mixin = Inhe.mixin.bind(null, Ctor);
   Ctor.getInstance = Inhe.getInstance.bind(null, Ctor);
+  Ctor.super_ = ParentCtor;
   Ctor._inhe = {
     mixins: [],
     singleton: null,
