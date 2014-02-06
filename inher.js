@@ -123,13 +123,12 @@ Inhe.mixin = function(Ctor) {
     if (typeof(arg) === 'function') {
       mixinCtors.push(arg);
     } else if (Array.isArray(arg)) {
-      mixinCtors.concat(arg);
+      mixinCtors = mixinCtors.concat(arg);
     } else {
       throw new TypeError('Mixin arguments not of right type');
     }
   });
 
-  console.log('ADDING:', Ctor._inhe.id, Ctor._inhe.UserCtor);
   mixinCtors.forEach(function(MixinCtor) {
     assign(Ctor.prototype, MixinCtor.prototype);
     Ctor._inhe.mixins.push(MixinCtor);
@@ -187,14 +186,10 @@ Inhe.extend = function() {
     ParentCtor.apply(this, parentArgs);
 
     // invoke all mixins
-    console.log('Mixin:', Ctor._inhe.mixins.length, Ctor._inhe.id);
-
     Ctor._inhe.mixins.forEach(function(Mixin) {
-      console.log('IN MIXIN', Mixin._inhe.UserCtor);
       Mixin.apply(this, parentArgs);
-    });
+    }.bind(this));
 
-    console.log('Invoking:', ChildCtor, this.a, this.b);
     ChildCtor.apply(this, ctorArgs);
   }
   Ctor.prototype = new TempCtor();

@@ -3,10 +3,8 @@
 /**
  * @fileOverview inherritance tests
  */
-
-// var sinon  = require('sinon');
 var chai = require('chai');
-// var sinon = require('sinon');
+var sinon = require('sinon');
 var assert = chai.assert;
 
 // var noop = function(){};
@@ -295,6 +293,56 @@ suite('2.3 Mixins tests', function() {
     assert.equal(grandChild.c, 3);
   });
   test('2.3.3 mixin accepts an array of ctors', function() {
+    var spyChild = sinon.spy();
+    var spyMixinOne = sinon.spy();
+    var spyMixinTwo = sinon.spy();
+    var spyMixinThree = sinon.spy();
+    var spyGrandChild = sinon.spy();
+
+    var Child = inher.extend(spyChild);
+
+    var ChildToMixin = inher.extend(spyMixinOne);
+    var ChildToMixinTwo = inher.extend(spyMixinTwo);
+    var ChildToMixinThree = inher.extend(spyMixinThree);
+
+    Child.mixin([ChildToMixin, ChildToMixinTwo, ChildToMixinThree]);
+
+    var GrandChild = Child.extend(spyGrandChild);
+
+    var grandChild = new GrandChild();
+
+    assert.ok(spyChild.calledOnce, 'spyChild should be called only once. Was Called:' + spyChild.callCount);
+    assert.ok(spyMixinOne.calledOnce, 'spyMixinOne should be called only once. Was Called:' + spyMixinOne.callCount);
+    assert.ok(spyMixinTwo.calledOnce, 'spyMixinTwo should be called only once. Was Called:' + spyMixinTwo.callCount);
+    assert.ok(spyMixinThree.calledOnce, 'spyMixinThree should be called only once. Was Called:' + spyMixinThree.callCount);
+    assert.ok(spyGrandChild.calledOnce, 'spyGrandChild should be called only once. Was Called:' + spyGrandChild.callCount);
+  });
+  test('2.3.3.2 mixin invokes ctors in the right order', function() {
+    var spyChild = sinon.spy();
+    var spyMixinOne = sinon.spy();
+    var spyMixinTwo = sinon.spy();
+    var spyMixinThree = sinon.spy();
+    var spyGrandChild = sinon.spy();
+
+    var Child = inher.extend(spyChild);
+
+    var ChildToMixin = inher.extend(spyMixinOne);
+    var ChildToMixinTwo = inher.extend(spyMixinTwo);
+    var ChildToMixinThree = inher.extend(spyMixinThree);
+
+    Child.mixin([ChildToMixin, ChildToMixinTwo, ChildToMixinThree]);
+
+    var GrandChild = Child.extend(spyGrandChild);
+
+    var grandChild = new GrandChild();
+
+    assert.ok(spyMixinOne.calledBefore(spyMixinTwo), 'spyMixinOne() before spyMixinTwo()');
+    assert.ok(spyMixinTwo.calledBefore(spyMixinThree), 'spyMixinTwo() before spyMixinThree()');
+    assert.ok(spyMixinThree.calledBefore(spyChild), 'spyMixinThree() before spyChild()');
+    assert.ok(spyChild.calledBefore(spyGrandChild), 'spyChild() before spyGrandChild()');
+  });
+
+  test('2.3.3.3 mixin ctors share the same context', function() {
     var Child = inher.extend(function() {
       this.a = 1;
     });

@@ -25,5 +25,8 @@
     "time-grunt": "~0.1.1",
     "grunt-mocha-test": "~0.7.0",
     "chai": "~1.9.0"
+  },
+  "dependencies": {
+    "sinon": "~1.8.1"
   }
 }
