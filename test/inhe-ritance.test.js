@@ -42,12 +42,14 @@ suite('2.0 Constructor tests', function() {
   });
 
   test('2.0.6 ctor "this" defined properties are inherited', function() {
-    var Child = Inhe.extend(function(){
+    var Child = Inhe.extend(function() {
+      console.log('in');
       this.a = 1;
     });
 
     var GrandChild = Child.extend();
     var grandChild = new GrandChild();
+    console.log('grandChild:', grandChild);
     assert.property(grandChild, 'a');
     assert.equal(grandChild.a, 1);
   });
@@ -134,6 +136,31 @@ suite('2.1 Constructor arguments tests', function() {
     assert.equal(grandChildSingleton.b, 8);
     assert.equal(grandChildSingleton.c, 0);
   });
+
+  test('2.1.2.2 Constructor arguments can be compositevely stubed by childs', function() {
+    var Child = Inhe.extend(function(arg1, arg2) {
+      this.a = arg1;
+      this.b = arg2;
+    });
+
+    var GrandChild = Child.extend(5, function(arg2, arg3) {
+      this.b = arg2;
+      this.c = arg3;
+    });
+
+    var GreatGrandChild = GrandChild.extend(6);
+
+    var greatGrandChild = new GreatGrandChild('lol');
+    var greatGrandChildSingleton = GreatGrandChild.getInstance(0);
+
+    assert.equal(greatGrandChild.a, 5);
+    assert.equal(greatGrandChild.b, 6);
+    assert.equal(greatGrandChild.c, 'lol');
+    assert.equal(greatGrandChildSingleton.a, 5);
+    assert.equal(greatGrandChildSingleton.b, 6);
+    assert.equal(greatGrandChildSingleton.c, 0);
+  });
+
 
   test('2.1.3 Constructor stubed arguments do not get confused with fn as args', function() {
     var Child = Inhe.extend(function(arg1, arg2) {

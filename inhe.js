@@ -1,3 +1,6 @@
+/*jshint unused:false */
+/*jshint camelcase:false */
+
 /**
  * @fileOverview Pseudoclassical Inheritance Helper
  * @author Thanasis Polychronakis 2014
@@ -76,6 +79,52 @@ function getChildCtor(args) {
 }
 
 /**
+ * Recursively Invoked Constructors up the inheritance chain.
+ *
+ * @param {Inhe} Ctor An Inhe Constructor to invoke.
+ * @param {Array} stubbedArgs Stubbed arguments.
+ * @param {Array} ctorArgs Arguments passed at instanciation.
+ * @param {Array} store An array to use as store of invoked constructors.
+ */
+function recursivelyInvokeInheritanceChain(Ctor, stubbedArgs, ctorArgs,
+  store) {
+  if (!Ctor._inhe) {
+    throw new Error('Not Inhe ctor found up in the inheritance chain');
+  }
+
+  var parentArgs = calculateParentArgs(Ctor, stubbedArgs, ctorArgs);
+  if (store.indexOf(Ctor._inhe.id) !== -1) {
+    // Last stop, everybody out.
+    if (Ctor._inhe.id === Inhe._inhe.id) {
+      return;
+    }
+    throw new Error('Infinite Loop detected on Parent ctor. Check your mixins.');
+  }
+  store.push(Ctor._inhe.id);
+
+  // invoke parent ctor
+  Ctor.apply(this, parentArgs);
+
+  // invoke all mixins and their parents up the chain
+  Ctor._inhe.mixins.forEach(function(Mixin) {
+    recursivelyInvokeInheritanceChain(Mixin, stubbedArgs, ctorArgs,
+      store);
+  });
+
+  if (Ctor.prototype.constructor !== Ctor) {
+    var NextCtor = Ctor.prototype.constructor;
+    // defence
+    if (!NextCtor._inhe) {
+      throw new Error('Not Inhe ctor found up in the inheritance chain');
+    }
+
+    recursivelyInvokeInheritanceChain(NextCtor, Ctor._inhe.stubbedArgs,
+      ctorArgs, store);
+  }
+}
+
+
+/**
  * A simple implementation to clone objects
  *
  * @param {Object} dest Target Object
@@ -85,6 +134,24 @@ function assign(dest, source) {
   for (var key in source) {
     dest[key] = source[key];
   }
+}
+
+/**
+ * Generate a random string.
+ *
+ * @param  {number=} optLength How long the string should be, default 8.
+ * @return {string} a random string.
+ */
+function generateRandomString(optLength) {
+  var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz';
+  var length = optLength || 8;
+  var string = '';
+  var randomNumber = 0;
+  for (var i = 0; i < length; i++) {
+    randomNumber = Math.floor(Math.random() * chars.length);
+    string += chars.substring(randomNumber, randomNumber + 1);
+  }
+  return string;
 }
 
 /**
@@ -111,7 +178,7 @@ Inhe.mixin = function(ParentCtor) {
 
   mixinCtors.forEach(function(MixinCtor) {
     assign(ParentCtor.prototype, MixinCtor.prototype);
-    ParentCtor._mixins.push(MixinCtor);
+    ParentCtor._inhe.mixins.push(MixinCtor);
   });
 };
 
@@ -123,14 +190,14 @@ Inhe.mixin = function(ParentCtor) {
  * @return {Inhe} The singleton instance for the provided Ctor.
  */
 Inhe.getInstance = function (ParentCtor) {
-  if (ParentCtor._instance) {
-    return ParentCtor._instance;
+  if (ParentCtor._inhe.singleton) {
+    return ParentCtor._inhe.singleton;
   }
   var args = Array.prototype.slice.call(arguments, 1);
   var singleton = Object.create(ParentCtor.prototype);
   singleton.constructor = ParentCtor;
   ParentCtor.apply(singleton, args);
-  ParentCtor._instance = singleton;
+  ParentCtor._inhe.singleton = singleton;
   return singleton;
 };
 
@@ -160,12 +227,8 @@ Inhe.extend = function() {
   ChildCtor.prototype.constructor = function() {
     this.super_ = ParentCtor;
     var ctorArgs = Array.prototype.slice.call(arguments, 0);
-    var parentArgs = calculateParentArgs(ParentCtor, args, ctorArgs);
-    ParentCtor.apply(this, parentArgs);
 
-    ParentCtor._mixins.forEach(function(Mixin) {
-      Mixin.apply(this, parentArgs);
-    });
+    recursivelyInvokeInheritanceChain(ParentCtor, args, ctorArgs, []);
 
     ChildCtor.apply(this, arguments);
   };
@@ -174,30 +237,29 @@ Inhe.extend = function() {
   ChildCtor.extend = Inhe.extend.bind(null, ChildCtor);
   ChildCtor.mixin = Inhe.mixin.bind(null, ChildCtor);
   ChildCtor.getInstance = Inhe.getInstance.bind(null, ChildCtor);
-  ChildCtor._isInhe = true;
-  ChildCtor._mixins = Array.prototype.slice.call(ParentCtor._mixins, 0);
+  ChildCtor._isInhe = {
+    mixins: [],
+    singleton: null,
+    stubbedArgs: args,
+    id: generateRandomString(),
+  };
 
   return ChildCtor;
 };
 
 /**
- * Store for Mixin constructors, FIFO.
- * @type {Array}
+ * Helper storage for inhe
+ * @type {Object}
  * @private
  */
-Inhe._mixins = [];
+Inhe._inhe = {
+  /** @type {Array} Store for Mixin constructors, FIFO. */
+  mixins: [],
+  /** @type {?Inhe} Container for singleton instance.. */
+  singleton: null,
+  /** @type {Array} Contains the stubbed arguments */
+  stubbedArgs: [],
+  /** @type {string} A unique identifier */
+  id: 'base',
+};
 
-/**
- * Indicates Inhe origin.
- * @type {boolean}
- * @private
- */
-Inhe._isInhe = true;
-
-/**
- * Container for singleton instance.
- *
- * @type {?Inhe}
- * @private
- */
-Inhe._instance = null;
