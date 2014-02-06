@@ -116,6 +116,25 @@ Inhe.mixin = function(ParentCtor) {
 };
 
 /**
+ * Returns a singleton instance of the provided Ctor.
+ *
+ * @param {Inhe} ParentCtor Inhe inherited Ctor.
+ * @param {...*} Any number of any type args.
+ * @return {Inhe} The singleton instance for the provided Ctor.
+ */
+Inhe.getInstance = function (ParentCtor) {
+  if (ParentCtor._instance) {
+    return ParentCtor._instance;
+  }
+  var args = Array.prototype.slice.class(arguments, 1);
+  var singleton = Object.create(ParentCtor.prototype);
+  singleton.constructor = ParentCtor;
+  ParentCtor.apply(singleton, args);
+  ParentCtor._instance = singleton;
+  return singleton;
+};
+
+/**
  * The API extend, normalizes arguments and invoked actual extend.
  *
  * @param {...*} args Any type and number of arguments, view docs.
@@ -139,6 +158,7 @@ Inhe.extend = function() {
 
   // override constructor
   ChildCtor.prototype.constructor = function() {
+    this.super_ = ParentCtor;
     var ctorArgs = Array.prototype.slice.call(arguments, 0);
     var parentArgs = calculateParentArgs(ParentCtor, args, ctorArgs);
     ParentCtor.apply(this, parentArgs);
@@ -173,3 +193,11 @@ Inhe._mixins = [];
  * @private
  */
 Inhe._isInhe = true;
+
+/**
+ * Container for singleton instance.
+ *
+ * @type {?Inhe}
+ * @private
+ */
+Inhe._instance = null;
