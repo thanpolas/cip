@@ -113,6 +113,53 @@ suite('3.3 Mixins tests', function() {
     assert.ok(spyChild.calledBefore(spyGrandChild), 'spyChild() before spyGrandChild()');
   });
 
+  test('3.3.3.2.1 Complex Mixin Constructors are invoked in the expected order', function() {
+    var spyOne = sinon.spy();
+    var spyTwo = sinon.spy();
+    var spyThree = sinon.spy();
+    var spyFour = sinon.spy();
+    var spyFive = sinon.spy();
+    var spyMixinOne = sinon.spy();
+    var spyMixinTwo = sinon.spy();
+    var spyMixinThree = sinon.spy();
+    var spyMixinFour = sinon.spy();
+    var spyMixinFive = sinon.spy();
+
+
+    var Mixin = inher.extend(spyMixinOne);
+    var MixinTwo = inher.extend(spyMixinTwo);
+    var MixinThree = inher.extend(spyMixinThree);
+    var MixinFour = inher.extend(spyMixinFour);
+    var MixinFive = inher.extend(spyMixinFive);
+
+    var Child = inher.extend(spyOne);
+    Child.mixin(Mixin);
+    
+    var GrandChild = Child.extend(spyTwo);
+    GrandChild.mixin(MixinTwo, MixinThree);
+
+    var GreatGrandChild = GrandChild.extend(spyThree);
+
+    var GreatGreatGrandChild = GreatGrandChild.extend(spyFour);
+    GreatGreatGrandChild.mixin([MixinFour, MixinFive]);
+
+    var GreatGreatGreatGrandChild = GreatGreatGrandChild.extend(spyFive);
+
+
+    GreatGreatGreatGrandChild.getInstance();
+
+    assert.ok(spyMixinOne.calledBefore(spyOne), 'Mixin() before Child()');
+    assert.ok(spyOne.calledBefore(spyMixinTwo), 'Child() before MixinTwo()');
+    assert.ok(spyMixinTwo.calledBefore(spyMixinThree), 'MixinTwo() before MixinThree()');
+    assert.ok(spyMixinThree.calledBefore(spyTwo), 'spyMixinThree() before GrandChild()');
+    assert.ok(spyTwo.calledBefore(spyThree), 'GrandChild() called before GreatGrandChild()');
+    assert.ok(spyThree.calledBefore(spyMixinFour), 'GreatGrandChild() called before MixinFour()');
+    assert.ok(spyMixinFour.calledBefore(spyMixinFive), 'MixinFour() called before MixinFive()');
+    assert.ok(spyMixinFive.calledBefore(spyFour), 'MixinFive() called before GreatGreatGrandChild()');
+    assert.ok(spyFour.calledBefore(spyFive), 'GreatGreatGrandChild called before GreatGreatGreatGrandChild');
+  });
+
+
   test('3.3.3.3 mixin ctors share the same context', function() {
     var Child = inher.extend(function() {
       this.a = 1;

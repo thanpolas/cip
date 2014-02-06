@@ -112,11 +112,32 @@ suite('2.2 inherritance tests', function() {
     var grandChildCopy = GrandChild.getInstance();
     assert.equal(grandChildCopy.a, 2);
   });
+
   test('2.2.4 parent ctor is on "super_"', function() {
     var Child = inher.extend();
     var GrandChild = Child.extend();
     assert.equal(GrandChild.super_, Child);
   });
 
+  test('2.2.5 Constructors are invoked in the expected order', function() {
+    var spyOne = sinon.spy();
+    var spyTwo = sinon.spy();
+    var spyThree = sinon.spy();
+    var spyFour = sinon.spy();
+    var spyFive = sinon.spy();
+
+    var Child = inher.extend(spyOne);
+    var GrandChild = Child.extend(spyTwo);
+    var GreatGrandChild = GrandChild.extend(spyThree);
+    var GreatGreatGrandChild = GreatGrandChild.extend(spyFour);
+    var GreatGreatGreatGrandChild = GreatGreatGrandChild.extend(spyFive);
+
+    GreatGreatGreatGrandChild.getInstance();
+
+    assert.ok(spyOne.calledBefore(spyTwo), 'Child called before GrandChild');
+    assert.ok(spyTwo.calledBefore(spyThree), 'GrandChild called before GreatGrandChild');
+    assert.ok(spyThree.calledBefore(spyFour), 'GreatGrandChild called before GreatGreatGrandChild');
+    assert.ok(spyFour.calledBefore(spyFive), 'GreatGreatGrandChild called before GreatGreatGreatGrandChild');
+  });
 });
 
