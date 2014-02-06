@@ -249,7 +249,16 @@ suite('2.2 inheritance tests', function() {
 });
 
 suite('2.3 Mixins tests', function() {
-  test('2.3.1 Mixin ctor gets invoked', function() {
+  test('2.3.1 Mixin ctor gets invoked', function(done) {
+    var Child = inhe.extend(function() {
+      this.a = 1;
+    });
+    var ChildToMixin = inhe.extend(done);
+    Child.mixin(ChildToMixin);
+
+    var child = new Child();
+  });
+  test('2.3.1.2 Instance shares same context with mixin', function() {
     var Child = inhe.extend(function() {
       this.a = 1;
     });
@@ -263,6 +272,7 @@ suite('2.3 Mixins tests', function() {
     assert.equal(child.a, 1);
     assert.equal(child.b, 2);
   });
+
   test('2.3.2 Ctor passes the mixin', function() {
     var Child = inhe.extend(function() {
       this.a = 1;
