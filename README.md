@@ -1,4 +1,4 @@
-# inhe 
+# Inher 
 
 Pseudoclassical Inheritance Helper
 
