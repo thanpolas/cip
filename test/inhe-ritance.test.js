@@ -24,16 +24,16 @@ suite('2.0 Constructor tests', function() {
   test('2.0.1 Extending with a constructor', function(done) {
     Inhe.extend(function() {
       done();
-    });
+    }).getInstance();
   });
   test('2.0.1.1 Can extend without a ctor', function(){
     assert.doesNotThrow(Inhe.extend);
   });
   test('2.0.2 extend() produces the expected static methods', function() {
     var Child = Inhe.extend();
-    assert.isfunction(Child.extend, 'extend');
-    assert.isfunction(Child.getInstance, 'getInstance');
-    assert.isfunction(Child.mixin, 'mixin');
+    assert.isFunction(Child.extend, 'extend');
+    assert.isFunction(Child.getInstance, 'getInstance');
+    assert.isFunction(Child.mixin, 'mixin');
   });
 
   test('2.0.3 extend() singleton has a reference to the ctor prototype', function() {
