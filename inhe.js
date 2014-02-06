@@ -110,12 +110,12 @@ function generateRandomString(optLength) {
 /**
  * Mixin method.
  *
- * @param {Inhe} ParentCtor ctor to mixin onto.
+ * @param {Inhe} Ctor ctor to mixin onto.
  * @param {...Function|...Inhe||Array.<Function>} args any combination of
  *   constructors to mixin, check documentation.
  * @return {void}
  */
-Inhe.mixin = function(ParentCtor) {
+Inhe.mixin = function(Ctor) {
   var args = Array.prototype.slice.call(arguments, 1);
   var mixinCtors = [];
 
@@ -129,9 +129,10 @@ Inhe.mixin = function(ParentCtor) {
     }
   });
 
+  console.log('ADDING:', Ctor._inhe.id, Ctor._inhe.UserCtor);
   mixinCtors.forEach(function(MixinCtor) {
-    assign(ParentCtor.prototype, MixinCtor.prototype);
-    ParentCtor._inhe.mixins.push(MixinCtor);
+    assign(Ctor.prototype, MixinCtor.prototype);
+    Ctor._inhe.mixins.push(MixinCtor);
   });
 };
 
@@ -186,10 +187,14 @@ Inhe.extend = function() {
     ParentCtor.apply(this, parentArgs);
 
     // invoke all mixins
+    console.log('Mixin:', Ctor._inhe.mixins.length, Ctor._inhe.id);
+
     Ctor._inhe.mixins.forEach(function(Mixin) {
+      console.log('IN MIXIN', Mixin._inhe.UserCtor);
       Mixin.apply(this, parentArgs);
     });
 
+    console.log('Invoking:', ChildCtor, this.a, this.b);
     ChildCtor.apply(this, ctorArgs);
   }
   Ctor.prototype = new TempCtor();

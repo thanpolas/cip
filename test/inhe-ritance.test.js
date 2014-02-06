@@ -1,7 +1,7 @@
 /*jshint unused:false */
 /*jshint camelcase:false */
 /**
- * @fileOverview Inheritance tests
+ * @fileOverview inheritance tests
  */
 
 // var sinon  = require('sinon');
@@ -11,7 +11,7 @@ var assert = chai.assert;
 
 // var noop = function(){};
 
-var Inhe = require('../');
+var inhe = require('../');
 
 
 
@@ -24,27 +24,27 @@ suite('2.0 Constructor tests', function() {
   teardown(function() {});
 
   test('2.0.1 Extending with a constructor', function(done) {
-    Inhe.extend(function() {
+    inhe.extend(function() {
       done();
     }).getInstance();
   });
   test('2.0.1.1 Can extend without a ctor', function(){
-    assert.doesNotThrow(Inhe.extend);
+    assert.doesNotThrow(inhe.extend);
   });
   test('2.0.2 extend() produces the expected static methods', function() {
-    var Child = Inhe.extend();
+    var Child = inhe.extend();
     assert.isFunction(Child.extend, 'extend');
     assert.isFunction(Child.getInstance, 'getInstance');
     assert.isFunction(Child.mixin, 'mixin');
   });
 
   test('2.0.3 extend() singleton has a reference to the ctor prototype', function() {
-    var child = Inhe.extend().getInstance();
-    assert.instanceOf(child, Inhe);
+    var child = inhe.extend().getInstance();
+    assert.instanceOf(child, inhe);
   });
 
   test('2.0.6 ctor "this" defined properties are inherited', function() {
-    var Child = Inhe.extend(function() {
+    var Child = inhe.extend(function() {
       this.a = 1;
     });
 
@@ -55,7 +55,7 @@ suite('2.0 Constructor tests', function() {
   });
 
   test('2.0.7 ctor "this" defined properties have no side-effects', function() {
-    var Child = Inhe.extend(function(){
+    var Child = inhe.extend(function(){
       this.a = 1;
       this.obj = {
         b: 2,
@@ -82,7 +82,7 @@ suite('2.0 Constructor tests', function() {
 
 suite('2.1 Constructor arguments tests', function() {
   test('2.1.1 Constructors can accept arguments', function() {
-    var Child = Inhe.extend(function(arg1, arg2) {
+    var Child = inhe.extend(function(arg1, arg2) {
       this.a = arg1;
       this.b = arg2;
     });
@@ -96,7 +96,7 @@ suite('2.1 Constructor arguments tests', function() {
     assert.equal(childSingleton.b, 4);
   });
   test('2.1.2 Constructor arguments can be stubed by childs', function() {
-    var Child = Inhe.extend(function(arg1, arg2) {
+    var Child = inhe.extend(function(arg1, arg2) {
       this.a = arg1;
       this.b = arg2;
     });
@@ -116,7 +116,7 @@ suite('2.1 Constructor arguments tests', function() {
     assert.equal(grandChildSingleton.c, 0);
   });
   test('2.1.2.2 Constructor arguments can be partially stubed by childs', function() {
-    var Child = Inhe.extend(function(arg1, arg2) {
+    var Child = inhe.extend(function(arg1, arg2) {
       this.a = arg1;
       this.b = arg2;
     });
@@ -137,7 +137,7 @@ suite('2.1 Constructor arguments tests', function() {
   });
 
   test('2.1.2.3 Constructor arguments can be compositevely stubed by childs', function() {
-    var Child = Inhe.extend(function(arg1, arg2) {
+    var Child = inhe.extend(function(arg1, arg2) {
       this.a = arg1;
       this.b = arg2;
     });
@@ -162,7 +162,7 @@ suite('2.1 Constructor arguments tests', function() {
 
 
   test('2.1.3 Constructor stubed arguments do not get confused with fn as args', function() {
-    var Child = Inhe.extend(function(arg1, arg2) {
+    var Child = inhe.extend(function(arg1, arg2) {
       this.a = arg1;
       this.b = arg2;
     });
@@ -185,7 +185,7 @@ suite('2.1 Constructor arguments tests', function() {
     assert.equal(grandChildSingleton.c, 0);
   });
   test('2.1.4 Constructor stubed arguments can omit ctor', function() {
-    var Child = Inhe.extend(function(arg1, arg2) {
+    var Child = inhe.extend(function(arg1, arg2) {
       this.a = arg1;
       this.b = arg2;
     });
@@ -207,9 +207,9 @@ suite('2.1 Constructor arguments tests', function() {
 
 });
 
-suite('2.2 Inheritance tests', function() {
+suite('2.2 inheritance tests', function() {
   test('2.2.1 static methods are not inherited', function(){
-    var Child = Inhe.extend();
+    var Child = inhe.extend();
     Child.astaticfn = function(){};
 
     var GrandChild = Child.extend();
@@ -217,7 +217,7 @@ suite('2.2 Inheritance tests', function() {
     assert.notProperty(GrandChild, 'astaticfn');
   });
   test('2.2.2 prototype methods are inherited', function() {
-    var Child = Inhe.extend();
+    var Child = inhe.extend();
     Child.prototype.add = function(a, b) { return a + b; };
 
     var GrandChild = Child.extend();
@@ -228,7 +228,7 @@ suite('2.2 Inheritance tests', function() {
   });
 
   test('2.2.3 getInstance returns the same instance', function() {
-    var Child = Inhe.extend(function() {
+    var Child = inhe.extend(function() {
       this.a = 1;
     });
     Child.prototype.add = function(a) { this.a += a; };
@@ -241,7 +241,7 @@ suite('2.2 Inheritance tests', function() {
     assert.equal(grandChildCopy.a, 2);
   });
   test('2.2.4 parent ctor is on "super_"', function() {
-    var Child = Inhe.extend();
+    var Child = inhe.extend();
     var GrandChild = Child.extend();
     assert.equal(GrandChild.super_, Child);
   });
@@ -250,14 +250,12 @@ suite('2.2 Inheritance tests', function() {
 
 suite('2.3 Mixins tests', function() {
   test('2.3.1 Mixin ctor gets invoked', function() {
-    var Child = Inhe.extend(function() {
+    var Child = inhe.extend(function() {
       this.a = 1;
     });
-
-    var ChildToMixin = Inhe.extend(function() {
+    var ChildToMixin = inhe.extend(function() {
       this.b = 2;
     });
-
     Child.mixin(ChildToMixin);
 
     var child = new Child();
@@ -266,11 +264,11 @@ suite('2.3 Mixins tests', function() {
     assert.equal(child.b, 2);
   });
   test('2.3.2 Ctor passes the mixin', function() {
-    var Child = Inhe.extend(function() {
+    var Child = inhe.extend(function() {
       this.a = 1;
     });
 
-    var ChildToMixin = Inhe.extend(function() {
+    var ChildToMixin = inhe.extend(function() {
       this.b = 2;
     });
 
@@ -287,13 +285,13 @@ suite('2.3 Mixins tests', function() {
     assert.equal(grandChild.c, 3);
   });
   test('2.3.3 mixin accepts an array of ctors', function() {
-    var Child = Inhe.extend(function() {
+    var Child = inhe.extend(function() {
       this.a = 1;
     });
 
-    var ChildToMixin = Inhe.extend(function() {this.b = 2;});
-    var ChildToMixinTwo = Inhe.extend(function() {this.c = 3;});
-    var ChildToMixinThree = Inhe.extend(function() {this.d = 4;});
+    var ChildToMixin = inhe.extend(function() {this.b = 2;});
+    var ChildToMixinTwo = inhe.extend(function() {this.c = 3;});
+    var ChildToMixinThree = inhe.extend(function() {this.d = 4;});
 
     Child.mixin([ChildToMixin, ChildToMixinTwo, ChildToMixinThree]);
 
@@ -310,13 +308,13 @@ suite('2.3 Mixins tests', function() {
     assert.equal(grandChild.e, 5);
   });
   test('2.3.4 mixin accepts comma separated ctors', function() {
-    var Child = Inhe.extend(function() {
+    var Child = inhe.extend(function() {
       this.a = 1;
     });
 
-    var ChildToMixin = Inhe.extend(function() {this.b = 2;});
-    var ChildToMixinTwo = Inhe.extend(function() {this.c = 3;});
-    var ChildToMixinThree = Inhe.extend(function() {this.d = 4;});
+    var ChildToMixin = inhe.extend(function() {this.b = 2;});
+    var ChildToMixinTwo = inhe.extend(function() {this.c = 3;});
+    var ChildToMixinThree = inhe.extend(function() {this.d = 4;});
 
     Child.mixin(ChildToMixin, ChildToMixinTwo, ChildToMixinThree);
 
@@ -332,13 +330,13 @@ suite('2.3 Mixins tests', function() {
     assert.equal(grandChild.d, 4);
     assert.equal(grandChild.e, 5);
   });
-  test('2.3.5 Mixin can interact with the this object', function() {
-    var Child = Inhe.extend(function() {
-      this.a = 1;
+  test('2.3.5 We can interact with the Mixin this object', function() {
+    var Child = inhe.extend(function() {
+      this.a += 1;
     });
 
-    var ChildToMixin = Inhe.extend(function() {
-      this.a += 1;
+    var ChildToMixin = inhe.extend(function() {
+      this.a = 1;
     });
 
     Child.mixin(ChildToMixin);
@@ -348,11 +346,11 @@ suite('2.3 Mixins tests', function() {
 
 
   test('2.3.10 Mixin prototype methods get passed down the chain', function() {
-    var Child = Inhe.extend(function() {
+    var Child = inhe.extend(function() {
       this.a = 1;
     });
 
-    var ChildToMixin = Inhe.extend();
+    var ChildToMixin = inhe.extend();
     ChildToMixin.prototype.add = function(a, b) {
       return a + b;
     };
