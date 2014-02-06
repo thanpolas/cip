@@ -76,6 +76,46 @@ function getChildCtor(args) {
 }
 
 /**
+ * A simple implementation to clone objects
+ *
+ * @param {Object} dest Target Object
+ * @param {Object} source Source Object
+ */
+function assign(dest, source) {
+  for (var key in source) {
+    dest[key] = source[key];
+  }
+}
+
+/**
+ * Mixin method.
+ *
+ * @param {Inhe} ParentCtor ctor to mixin onto.
+ * @param {...Function|...Inhe||Array.<Function>} args any combination of
+ *   constructors to mixin, check documentation.
+ * @return {void}
+ */
+Inhe.mixin = function(ParentCtor) {
+  var args = Array.prototype.slice.call(arguments, 1);
+  var mixinCtors = [];
+
+  args.forEach(function(arg) {
+    if (typeof(arg) === 'function') {
+      mixinCtors.push(arg);
+    } else if (Array.isArray(arg)) {
+      mixinCtors.concat(arg);
+    } else {
+      throw new TypeError('Mixin arguments not of right type');
+    }
+  });
+
+  mixinCtors.forEach(function(MixinCtor) {
+    assign(ParentCtor.prototype, MixinCtor.prototype);
+    ParentCtor._mixins.push(MixinCtor);
+  });
+};
+
+/**
  * The API extend, normalizes arguments and invoked actual extend.
  *
  * @param {...*} args Any type and number of arguments, view docs.
@@ -102,6 +142,11 @@ Inhe.extend = function() {
     var ctorArgs = Array.prototype.slice.call(arguments, 0);
     var parentArgs = calculateParentArgs(ParentCtor, args, ctorArgs);
     ParentCtor.apply(this, parentArgs);
+
+    ParentCtor._mixins.forEach(function(Mixin) {
+      Mixin.apply(this, parentArgs);
+    });
+
     ChildCtor.apply(this, arguments);
   };
 
@@ -110,6 +155,21 @@ Inhe.extend = function() {
   ChildCtor.mixin = Inhe.mixin.bind(null, ChildCtor);
   ChildCtor.getInstance = Inhe.getInstance.bind(null, ChildCtor);
   ChildCtor._isInhe = true;
+  ChildCtor._mixins = Array.prototype.slice.call(ParentCtor._mixins, 0);
 
   return ChildCtor;
 };
+
+/**
+ * Store for Mixin constructors, FIFO.
+ * @type {Array}
+ * @private
+ */
+Inhe._mixins = [];
+
+/**
+ * Indicates Inhe origin.
+ * @type {boolean}
+ * @private
+ */
+Inhe._isInhe = true;
