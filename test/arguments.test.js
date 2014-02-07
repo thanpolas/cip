@@ -17,8 +17,8 @@ var inher = require('../');
 // The purpose is to provide a unique string so specific tests are
 // run by using the mocha --grep "1.1.1" option.
 
-suite('2.1 Constructor arguments tests', function() {
-  test('2.1.1 Constructors can accept arguments', function() {
+suite('5.1 Constructor arguments tests', function() {
+  test('5.1.1 Constructors can accept arguments', function() {
     var Child = inher.extend(function(arg1, arg2) {
       this.a = arg1;
       this.b = arg2;
@@ -32,7 +32,7 @@ suite('2.1 Constructor arguments tests', function() {
     assert.equal(childSingleton.a, 3);
     assert.equal(childSingleton.b, 4);
   });
-  test('2.1.2 Constructor arguments can be stubed by childs', function() {
+  test('5.1.2 Constructor arguments can be stubbed by childs', function() {
     var Child = inher.extend(function(arg1, arg2) {
       this.a = arg1;
       this.b = arg2;
@@ -52,7 +52,7 @@ suite('2.1 Constructor arguments tests', function() {
     assert.equal(grandChildSingleton.b, 6);
     assert.equal(grandChildSingleton.c, 0);
   });
-  test('2.1.2.2 Constructor arguments can be partially stubed by childs', function() {
+  test('5.1.2.2 Constructor arguments can be partially stubbed by childs', function() {
     var Child = inher.extend(function(arg1, arg2) {
       this.a = arg1;
       this.b = arg2;
@@ -73,7 +73,7 @@ suite('2.1 Constructor arguments tests', function() {
     assert.equal(grandChildSingleton.c, 0);
   });
 
-  test('2.1.2.3 Constructor arguments can be compositevely stubed by childs', function() {
+  test('5.1.2.3 Constructor arguments can be compositevely stubbed by childs', function() {
     var Child = inher.extend(function(arg1, arg2) {
       this.a = arg1;
       this.b = arg2;
@@ -98,7 +98,7 @@ suite('2.1 Constructor arguments tests', function() {
   });
 
 
-  test('2.1.3 Constructor stubed arguments do not get confused with fn as args', function() {
+  test('5.1.3 Constructor stubbed arguments do not get confused with fn as args', function() {
     var Child = inher.extend(function(arg1, arg2) {
       this.a = arg1;
       this.b = arg2;
@@ -121,7 +121,7 @@ suite('2.1 Constructor arguments tests', function() {
     assert.equal(grandChildSingleton.b, 8);
     assert.equal(grandChildSingleton.c, 0);
   });
-  test('2.1.4 Constructor stubed arguments can omit ctor', function() {
+  test('5.1.4 Constructor stubbed arguments can omit ctor', function() {
     var Child = inher.extend(function(arg1, arg2) {
       this.a = arg1;
       this.b = arg2;
