@@ -299,7 +299,8 @@ inher.isInher(Thing); // true
 ```
 
 ## Release History
-_(Nothing yet)_
+- **v0.0.1**, *7 Feb 2014*
+    - Big Bang
 
 ## License
 Copyright (c) 2014 Thanasis Polychronakis. Licensed under the MIT license.
