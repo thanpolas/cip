@@ -27,10 +27,10 @@
     "load-grunt-tasks": "~0.2.0",
     "time-grunt": "~0.1.1",
     "grunt-mocha-test": "~0.7.0",
+    "sinon": "~1.8.1",
     "chai": "~1.9.0",
     "mocha": "~1.17.1"
   },
   "dependencies": {
-    "sinon": "~1.8.1"
   }
 }
