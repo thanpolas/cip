@@ -31,7 +31,7 @@ suite('4.1 Wrap tests', function() {
 
   });
 
-  test('4.1.1 Wrap adds all Inher props and methods', function(done) {
+  test('4.1.1 Wrap adds all Inher props and methods', function() {
     var InherTypicalCtor = inher.wrap(TypicalCtor);
     assert.ok(inher.isInher(InherTypicalCtor));
     assert.isFunction(InherTypicalCtor.extend, 'InherTypicalCtor should have an "extend" static method');
@@ -39,7 +39,7 @@ suite('4.1 Wrap tests', function() {
     assert.notProperty(InherTypicalCtor, 'wrap', 'InherTypicalCtor should *not* have a "wrap" static method');
     assert.notProperty(InherTypicalCtor, 'isInher', 'InherTypicalCtor should *not* have a "isInher" static method');
   });
-  test('4.1.2 extending wrapped constructors retains instanceof', function(done) {
+  test('4.1.2 extending wrapped constructors retains instanceof', function() {
     var InherTypicalCtor = inher.wrap(TypicalCtor);
     var Child = InherTypicalCtor.extend();
 
