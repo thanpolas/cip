@@ -247,7 +247,9 @@ var UserController = Controller.extend(function(app) {
 
 // create the singleton to pass app
 UserController.getInstance(require('some-fancy-DI');
+```
 
+```js
 // ... someplace else far far away ...
 
 // This will return the same exact instance
