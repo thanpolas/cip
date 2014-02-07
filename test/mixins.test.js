@@ -134,7 +134,7 @@ suite('3.3 Mixins tests', function() {
 
     var Child = inher.extend(spyOne);
     Child.mixin(Mixin);
-    
+
     var GrandChild = Child.extend(spyTwo);
     GrandChild.mixin(MixinTwo, MixinThree);
 
