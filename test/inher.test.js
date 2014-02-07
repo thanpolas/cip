@@ -1,7 +1,7 @@
 var chai = require('chai');
 var assert = chai.assert;
 
-var Inhe = require('../');
+var inher = require('../');
 
 /*
   ======== A Handy Little Mocha Reference ========
@@ -40,9 +40,39 @@ teardown(function() {});
 // run by using the mocha --grep "1.1.1" option.
 
 suite('1.1 API Surface', function() {
-  test('1.1.1 Core Methods', function() {
-    assert.isFunction(Inhe, 'Inhe core is a "constructor"');
-    assert.isFunction(Inhe.extend, 'Inhe should have an "extend" static method');
-    assert.isFunction(Inhe.getInstance, 'Inhe should have a "getInstance" static method');
+  test('1.1.1 Exported Methods', function() {
+    assert.isFunction(inher, 'inher core is a "constructor"');
+    assert.isFunction(inher.extend, 'inher should have an "extend" static method');
+    assert.isFunction(inher.getInstance, 'inher should have a "getInstance" static method');
+    assert.isFunction(inher.isInher, 'inher should have a "isInher" static method');
+    assert.isFunction(inher.wrap, 'inher should have a "wrap" static method');
   });
+});
+
+
+suite('1.2 isInher() function', function() {
+  test('1.2.1 identifies core as inher', function() {
+    assert.ok(inher.isInher(inher));
+  });
+  test('1.2.2 identifies extended class as inher', function() {
+    var Child = inher.extend();
+    assert.ok(inher.isInher(Child));
+  });
+  test('1.2.3 identifies extended class with ctor as inher', function() {
+    var Child = inher.extend(function(){});
+    assert.ok(inher.isInher(Child));
+  });
+  test('1.2.4 identifies extended classes as inher down 10 levels', function() {
+    var howDeep = 10;
+    function recurse(Parent) {
+      var Child = Parent.extend();
+      assert.ok(inher.isInher(Child), 'Child at level ' + howDeep + ' should yield true for inInher()');
+
+      if (--howDeep) {
+        recurse(Child);
+      }
+    }
+    recurse(inher);
+  });
+
 });
