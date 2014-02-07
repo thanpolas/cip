@@ -1,7 +1,7 @@
 {
   "name": "inher",
   "version": "0.0.1",
-  "main": "./inher.js",
+  "main": "./",
   "description": "Pseudoclassical Inheritance Helper",
   "homepage": "https://github.com/thanpolas/inher",
   "bugs": "https://github.com/thanpolas/inher/issues",
