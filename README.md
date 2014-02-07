@@ -40,7 +40,7 @@ console.log(grandChild.getAddition());
 // prints: 9
 ```
 
-## Documentation
+## API
 
 ### extend() Creates new children
 
@@ -158,6 +158,7 @@ Inher itself is a constructor that can be instantiated and has a `prototype` tha
 > Ctor.mixin(Constructor, [Ctor, Ctor])
 
 * **Constructor** `...Function|Array.<Function>` :: Any number of Constructors passed as separate arguments or in an Array.
+* Returns `void` Nothing.
 
 The `mixin()` method will merge the prototype of the mixed in Ctors and ensure their constructors are invoked. The full inheritance chain of a Mixin is honored along with their respective Stubbed Arguments, if any. The Mixin's constructor will be invoked in the same context and therefore you can easily interact with internal properties and methods.
 
@@ -233,19 +234,19 @@ When `GreatGrandChild` will be instantiated this will be the sequence of Constru
 
 ### getInstance() Get a singleton instance
 
-> Ctor.getInstance(...args)
+> Ctor.getInstance()
 
-* **...args** `*` :: Any number of any type of arguments, will be passed to constructors.
+* Returns `Object` An instance of Ctor.
 
-Use the `getInstance()` for getting a singleton of the Constructor. Note that arguments can only be passed on the first invocation of `getInstance` which is the one that actually creates a new instance of the Constructor. So be proactive if your singletons require instantiation arguments and invoke early.
+Use the `getInstance()` for getting a singleton of the Constructor.
 
 ```js
 var UserController = Controller.extend(function(app) {
   this.app = app;
 });
 
-// create the singleton to pass app
-UserController.getInstance(require('some-fancy-DI');
+// Get the singleton
+UserController.getInstance();
 ```
 
 ```js
@@ -262,6 +263,7 @@ var userController = UserController.getInstance();
 > inher.wrap(VanillaCtor)
 
 * **VanillaCtor** `Function` :: A vanilla constructor.
+* Returns `Function` :: A clone copy of the VanillaCtor augmented with Inher's static properties and functions.
 
 The `wrap()` method is only available from the Inher module, it will add all the static methods that every Inher ctor has. `wrap()` is used by Inher itself to create the new ancestors.
 
@@ -271,12 +273,13 @@ var EventEmitter = require('events').EventEmitter;
 
 var inher = require('inher');
 
-inher.wrap(EventEmitter);
+var IeventEmitter = inher.wrap(EventEmitter);
 
-var Thing = EventEmitter.extend();
+var Thing = IeventEmitter.extend();
 
 var newThing = new Thing();
 
+newThing instanceof IeventEmitter; // true
 newThing instanceof EventEmitter; // true
 ```
 
