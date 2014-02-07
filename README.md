@@ -1,6 +1,6 @@
 # Inher
 
-Pseudoclassical and Prototypal Inheritance Helper.
+Pseudo-classical Inheritance at its best.
 
 Provides `.extend()` convenience function with argument stubbing, always retaining the prototypal inheritance chain making `instanceof` work.
 
@@ -10,7 +10,6 @@ Provides `.extend()` convenience function with argument stubbing, always retaini
 
 ```shell
 npm install inher --save
-
 ```
 
 
@@ -36,7 +35,7 @@ GrandChild.prototype.getAddition = function() {
   return this.add(this.a, this.b);
 };
 
-// instanciate a GrandChild
+// instantiate a GrandChild
 var grandChild = new GrandChild(4, 5);
 
 console.log(grandChild.getAddition());
@@ -49,8 +48,9 @@ console.log(grandChild.getAddition());
 
 > inher.extend(...args=, Constructor=)
 
-* **...args=** `Any Type` *Optional* :: Any number of any type of arguments to use for stubbing the Parent Constructor. This is an advanced topic, more on that later.
+* **...args=** `Any Type` *Optional* :: Any number of any type of arguments to use for stubbing the Parent Constructor. This is an advanced topic, more on that at [Stubbed Arguments][#argument-stubbing-with-extend].
 * **Constructor=** `Function` *Optional* :: Optionally pass a Constructor.
+* Returns `Function` A new Constructor.
 
 Extend will create a new Constructor that inherits from the Ctor it was called from. Optionally you can define your own Constructor that will get invoked as expected on every new instantiation.
 
@@ -299,7 +299,6 @@ var Thing = inher.extend();
 
 inher.isInher(Thing); // true
 ```
-
 
 ## Release History
 _(Nothing yet)_
