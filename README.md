@@ -1,16 +1,14 @@
-# Inher 
+# Inher
 
 Pseudoclassical Inheritance Helper
 
-[![Build Status](https://secure.travis-ci.org/thanpolas/inhe.png?branch=master)](http://travis-ci.org/thanpolas/inhe)
-
+[![Build Status](https://travis-ci.org/thanpolas/inher.png?branch=master)](https://travis-ci.org/thanpolas/inher)
 
 ## Getting Started
-Install the module with: `npm install inhe`
+Install the module with: `npm install inher`
 
 ```javascript
-var inhe = require('inhe');
-inhe.awesome(); // "awesome"
+var inher = require('inher');
 ```
 
 ## Documentation
