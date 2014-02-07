@@ -52,7 +52,7 @@ console.log(grandChild.getAddition());
 
 Extend will create a new Constructor that inherits from the Ctor it was called from. Optionally you can define your own Constructor that will get invoked as expected on every new instantiation.
 
-Extend uses the [Pseudo Classical][proto.post] [pattern][addy.proto], the same exact mechanism that is used by [`util.inherits`][util.inherits].
+Extend uses the Pseudo Classical [pattern][addy.proto], the same exact mechanism that is used by [`util.inherits`][util.inherits].
 
 [Check out the tests relating to `extend()` and inheritance.][test.inheritance]
 
@@ -110,7 +110,6 @@ var GreatGrandChild = GrandChild.extend(4, 5, 6, function(){/* ctor */});
 
 Inher uses your constructor's arity to determine the exact amount of arguments to pass. This means that the constructor will get as many arguments as are defined, as long as they are available by the instantiation.
 
-[proto.post]: http://dsheiko.com/weblog/prototypal-inheritance-in-javascript-for-modules/
 [addy.proto]: http://addyosmani.com/resources/essentialjsdesignpatterns/book/#constructorpatternjavascript
 [util.inherits]: http://nodejs.org/docs/latest/api/util.html#util_util_inherits_constructor_superconstructor
 [test.stubbed]: https://github.com/thanpolas/inher/blob/master/test/arguments.test.js
