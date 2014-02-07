@@ -1,7 +1,5 @@
 # Inher
 
-Pseudo-classical Inheritance at its best.
-
 Provides `.extend()` convenience function with argument stubbing, always retaining the prototypal inheritance chain making `instanceof` work.
 
 [![Build Status](https://travis-ci.org/thanpolas/inher.png?branch=master)](https://travis-ci.org/thanpolas/inher)
@@ -48,7 +46,7 @@ console.log(grandChild.getAddition());
 
 > inher.extend(...args=, Constructor=)
 
-* **...args=** `Any Type` *Optional* :: Any number of any type of arguments to use for stubbing the Parent Constructor. This is an advanced topic, more on that at [Stubbed Arguments][#argument-stubbing-with-extend].
+* **...args=** `Any Type` *Optional* :: Any number of any type of arguments to use for stubbing the Parent Constructor. This is an advanced topic, more on that at [Stubbed Arguments](#argument-stubbing-with-extend).
 * **Constructor=** `Function` *Optional* :: Optionally pass a Constructor.
 * Returns `Function` A new Constructor.
 
