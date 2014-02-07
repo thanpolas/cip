@@ -25,7 +25,7 @@ suite('5.1 Constructor arguments tests', function() {
     });
 
     var child = new Child(1, 2);
-    var childSingleton = Child.getInstance(3, 4);
+    var childSingleton = new Child(3, 4);
 
     assert.equal(child.a, 1);
     assert.equal(child.b, 2);
@@ -43,7 +43,7 @@ suite('5.1 Constructor arguments tests', function() {
     });
 
     var grandChild = new GrandChild('lol');
-    var grandChildSingleton = GrandChild.getInstance(0);
+    var grandChildSingleton = new GrandChild(0);
 
     assert.equal(grandChild.a, 5);
     assert.equal(grandChild.b, 6);
@@ -63,7 +63,7 @@ suite('5.1 Constructor arguments tests', function() {
     });
 
     var grandChild = new GrandChild(9, 'lol');
-    var grandChildSingleton = GrandChild.getInstance(8, 0);
+    var grandChildSingleton = new GrandChild(8, 0);
 
     assert.equal(grandChild.a, 5);
     assert.equal(grandChild.b, 9);
@@ -87,7 +87,7 @@ suite('5.1 Constructor arguments tests', function() {
     var GreatGrandChild = GrandChild.extend(6);
 
     var greatGrandChild = new GreatGrandChild('lol');
-    var greatGrandChildSingleton = GreatGrandChild.getInstance(0);
+    var greatGrandChildSingleton = new GreatGrandChild(0);
 
     assert.equal(greatGrandChild.a, 5);
     assert.equal(greatGrandChild.b, 6);
@@ -109,7 +109,7 @@ suite('5.1 Constructor arguments tests', function() {
     });
 
     var grandChild = new GrandChild('lol');
-    var grandChildSingleton = GrandChild.getInstance(0);
+    var grandChildSingleton = new GrandChild(0);
 
     assert.isFunction(grandChild.a);
     grandChild.a();
@@ -130,7 +130,7 @@ suite('5.1 Constructor arguments tests', function() {
     var GrandChild = Child.extend(function(){this.b++;}, 6);
 
     var grandChild = new GrandChild();
-    var grandChildSingleton = GrandChild.getInstance();
+    var grandChildSingleton = new GrandChild();
 
     assert.isFunction(grandChild.a);
     grandChild.a();

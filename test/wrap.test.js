@@ -45,4 +45,11 @@ suite('4.1 Wrap tests', function() {
 
     assert.instanceOf(Child.getInstance(), TypicalCtor);
   });
+  test('4.1.3 Wrapping constructors does not mutate original Ctor', function() {
+    var InherTypicalCtor = inher.wrap(TypicalCtor);
+    var Child = InherTypicalCtor.extend();
+
+    assert.notProperty(TypicalCtor, 'extend');
+    assert.notOk(inher.isInher(TypicalCtor));
+  });
 });
