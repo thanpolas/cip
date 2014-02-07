@@ -303,6 +303,9 @@ inher.isInher(Thing); // true
 ```
 
 ## Release History
+- **v0.1.0**, *7 Feb 2014*
+    - `wrap()` Now does not muttate the Ctor passed.
+    - `getInstance()` will not accept arguments, it's an anti-pattern.
 - **v0.0.3**, *7 Feb 2014*
     - Clear dependencies
 - **v0.0.2**, *7 Feb 2014*
