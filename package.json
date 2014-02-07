@@ -1,6 +1,6 @@
 {
   "name": "inher",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "./",
   "description": "Pseudo-classical Inheritance at its best",
   "homepage": "https://github.com/thanpolas/inher",

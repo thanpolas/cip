@@ -301,6 +301,8 @@ inher.isInher(Thing); // true
 ```
 
 ## Release History
+- **v0.0.2**, *7 Feb 2014*
+    - Bug Fixes
 - **v0.0.1**, *7 Feb 2014*
     - Big Bang
 
