@@ -1,1 +1,1 @@
-module.exports = require('./lib/inher');
+module.exports = require('./lib/cip');
