@@ -71,7 +71,7 @@ function registerTests(extendMethod, singleton) {
   });
 
 
-  suite('Inheritance tests, typical inheritance', function() {
+  suite('Inheritance tests', function() {
     test('static methods are not Inherited', function(){
       var Child = Cip[extendMethod]();
       Child.astaticfn = function(){};
@@ -85,30 +85,16 @@ function registerTests(extendMethod, singleton) {
       Child.prototype.add = function(a, b) { return a + b; };
 
       var GrandChild = Child[extendMethod]();
-      var grandChild = GrandChild.getInstance();
+      var grandChild = new GrandChild();
 
       assert.isFunction(grandChild.add);
       assert.equal(grandChild.add(1,1), 2);
     });
 
-    test('getInstance returns the same instance', function() {
-      var Child = Cip[extendMethod](function() {
-        this.a = 1;
-      });
-      Child.prototype.add = function(a) { this.a += a; };
-
-      var GrandChild = Child[extendMethod]();
-      var grandChild = GrandChild.getInstance();
-      grandChild.add(1);
-
-      var grandChildCopy = GrandChild.getInstance();
-      assert.equal(grandChildCopy.a, 2);
-    });
-
-    test('parent ctor is on "super_"', function() {
+    test('parent ctor is on "prototype.constructor"', function() {
       var Child = Cip[extendMethod]();
       var GrandChild = Child[extendMethod]();
-      assert.equal(GrandChild.super_, Child);
+      assert.equal(GrandChild.prototype.constructor, Child);
     });
 
     test('Constructors are invoked in the expected order', function() {
@@ -124,7 +110,7 @@ function registerTests(extendMethod, singleton) {
       var GreatGreatGrandChild = GreatGrandChild[extendMethod](spyFour);
       var GreatGreatGreatGrandChild = GreatGreatGrandChild[extendMethod](spyFive);
 
-      GreatGreatGreatGrandChild.getInstance();
+      var g = new GreatGreatGreatGrandChild();
 
       assert.ok(spyOne.calledBefore(spyTwo), 'Child called before GrandChild');
       assert.ok(spyTwo.calledBefore(spyThree), 'GrandChild called before GreatGrandChild');

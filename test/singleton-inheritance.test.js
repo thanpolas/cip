@@ -19,7 +19,7 @@ suite('Constructor tests Singleton inheritance', function() {
     var child = Child.getInstance();
     child.a++;
     var samechild = new Child();
-    assert.isEqual(samechild.a, 2);
+    assert.equal(samechild.a, 2);
   });
 
   test('extendSingleton() singleton has a reference to the ctor prototype', function() {

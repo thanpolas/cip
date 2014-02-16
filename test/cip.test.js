@@ -37,9 +37,8 @@ suite('API Surface', function() {
     assert.isFunction(Cip, 'Cip core is a "constructor"');
     assert.isFunction(Cip.extend, 'Cip should have an "extend" static method');
     assert.isFunction(Cip.extendSingleton, 'Cip should have an "extendSingleton" static method');
-    assert.isFunction(Cip.getInstance, 'Cip should have a "getInstance" static method');
     assert.isFunction(Cip.is, 'Cip should have a "is" static method');
-    assert.isFunction(Cip.wrap, 'Cip should have a "wrap" static method');
+    assert.isFunction(Cip.cast, 'Cip should have a "cast" static method');
   });
 });
 
