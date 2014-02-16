@@ -1,10 +1,10 @@
 {
-  "name": "inher",
-  "version": "0.1.0",
+  "name": "cip",
+  "version": "0.2.0",
   "main": "./",
-  "description": "Pseudo-classical Inheritance at its best",
-  "homepage": "https://github.com/thanpolas/inher",
-  "bugs": "https://github.com/thanpolas/inher/issues",
+  "description": "Classical Inheritance Pattern at its best",
+  "homepage": "https://github.com/thanpolas/cip",
+  "bugs": "https://github.com/thanpolas/cip/issues",
   "author": {
     "name": "Thanasis Polychronakis",
     "email": "thanpolas@gmail.com",
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/thanpolas/inher"
+    "url": "https://github.com/thanpolas/cip"
   },
   "licenses": [
     {
