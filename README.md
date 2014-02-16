@@ -329,7 +329,7 @@ cip.is(Thing); // true
 ```
 
 ## Release History
-- **v0.2.0**, *16 Feb 2014*
+- **v0.2.0**, *17 Feb 2014*
     - Introduced `extendSingleton()` to explicitly state a Ctor follows the Singleton pattern.
     - Renamed package to "cip"
     - Renamed `isInher()` method to `is()`
