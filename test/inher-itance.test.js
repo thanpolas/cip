@@ -11,37 +11,31 @@ var assert = chai.assert;
 
 var inher = require('../');
 
-
-
-// The numbering (e.g. 1.1.1) has nothing to do with order
-// The purpose is to provide a unique string so specific tests are
-// run by using the mocha --grep "1.1.1" option.
-
-suite('2.0 Constructor tests', function() {
+suite('Constructor tests', function() {
   setup(function() {});
   teardown(function() {});
 
-  test('2.0.1 Extending with a constructor', function(done) {
+  test('Extending with a constructor', function(done) {
     inher.extend(function() {
       done();
     }).getInstance();
   });
-  test('2.0.1.1 Can extend without a ctor', function(){
+  test('Can extend without a ctor', function(){
     assert.doesNotThrow(inher.extend);
   });
-  test('2.0.2 extend() produces the expected static methods', function() {
+  test('extend() produces the expected static methods', function() {
     var Child = inher.extend();
     assert.isFunction(Child.extend, 'extend');
     assert.isFunction(Child.getInstance, 'getInstance');
     assert.isFunction(Child.mixin, 'mixin');
   });
 
-  test('2.0.3 extend() singleton has a reference to the ctor prototype', function() {
+  test('extend() singleton has a reference to the ctor prototype', function() {
     var child = inher.extend().getInstance();
     assert.instanceOf(child, inher);
   });
 
-  test('2.0.6 ctor "this" defined properties are inherrited', function() {
+  test('ctor "this" defined properties are inherrited', function() {
     var Child = inher.extend(function() {
       this.a = 1;
     });
@@ -52,7 +46,7 @@ suite('2.0 Constructor tests', function() {
     assert.equal(grandChild.a, 1);
   });
 
-  test('2.0.7 ctor "this" defined properties have no side-effects', function() {
+  test('ctor "this" defined properties have no side-effects', function() {
     var Child = inher.extend(function(){
       this.a = 1;
       this.obj = {
@@ -78,9 +72,8 @@ suite('2.0 Constructor tests', function() {
 
 });
 
-
-suite('2.2 inherritance tests', function() {
-  test('2.2.1 static methods are not inherrited', function(){
+suite('inherritance tests', function() {
+  test('static methods are not inherrited', function(){
     var Child = inher.extend();
     Child.astaticfn = function(){};
 
@@ -88,7 +81,7 @@ suite('2.2 inherritance tests', function() {
 
     assert.notProperty(GrandChild, 'astaticfn');
   });
-  test('2.2.2 prototype methods are inherrited', function() {
+  test('prototype methods are inherrited', function() {
     var Child = inher.extend();
     Child.prototype.add = function(a, b) { return a + b; };
 
@@ -99,7 +92,7 @@ suite('2.2 inherritance tests', function() {
     assert.equal(grandChild.add(1,1), 2);
   });
 
-  test('2.2.3 getInstance returns the same instance', function() {
+  test('getInstance returns the same instance', function() {
     var Child = inher.extend(function() {
       this.a = 1;
     });
@@ -113,13 +106,13 @@ suite('2.2 inherritance tests', function() {
     assert.equal(grandChildCopy.a, 2);
   });
 
-  test('2.2.4 parent ctor is on "super_"', function() {
+  test('parent ctor is on "super_"', function() {
     var Child = inher.extend();
     var GrandChild = Child.extend();
     assert.equal(GrandChild.super_, Child);
   });
 
-  test('2.2.5 Constructors are invoked in the expected order', function() {
+  test('Constructors are invoked in the expected order', function() {
     var spyOne = sinon.spy();
     var spyTwo = sinon.spy();
     var spyThree = sinon.spy();

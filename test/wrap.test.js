@@ -11,13 +11,7 @@ var assert = chai.assert;
 
 var inher = require('../');
 
-
-
-// The numbering (e.g. 1.1.1) has nothing to do with order
-// The purpose is to provide a unique string so specific tests are
-// run by using the mocha --grep "1.1.1" option.
-
-suite('4.1 Wrap tests', function() {
+suite('Wrap tests', function() {
   var TypicalCtor;
   setup(function(){
     TypicalCtor = function () {
@@ -31,7 +25,7 @@ suite('4.1 Wrap tests', function() {
 
   });
 
-  test('4.1.1 Wrap adds all Inher props and methods', function() {
+  test('Wrap adds all Inher props and methods', function() {
     var InherTypicalCtor = inher.wrap(TypicalCtor);
     assert.ok(inher.isInher(InherTypicalCtor));
     assert.isFunction(InherTypicalCtor.extend, 'InherTypicalCtor should have an "extend" static method');
@@ -39,13 +33,13 @@ suite('4.1 Wrap tests', function() {
     assert.notProperty(InherTypicalCtor, 'wrap', 'InherTypicalCtor should *not* have a "wrap" static method');
     assert.notProperty(InherTypicalCtor, 'isInher', 'InherTypicalCtor should *not* have a "isInher" static method');
   });
-  test('4.1.2 extending wrapped constructors retains instanceof', function() {
+  test('extending wrapped constructors retains instanceof', function() {
     var InherTypicalCtor = inher.wrap(TypicalCtor);
     var Child = InherTypicalCtor.extend();
 
     assert.instanceOf(Child.getInstance(), TypicalCtor);
   });
-  test('4.1.3 Wrapping constructors does not mutate original Ctor', function() {
+  test('Wrapping constructors does not mutate original Ctor', function() {
     var InherTypicalCtor = inher.wrap(TypicalCtor);
     var Child = InherTypicalCtor.extend();
 

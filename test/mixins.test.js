@@ -11,14 +11,8 @@ var assert = chai.assert;
 
 var inher = require('../');
 
-
-
-// The numbering (e.g. 1.1.1) has nothing to do with order
-// The purpose is to provide a unique string so specific tests are
-// run by using the mocha --grep "1.1.1" option.
-
-suite('3.3 Mixins tests', function() {
-  test('3.3.1 Mixin ctor gets invoked', function(done) {
+suite('Mixins tests', function() {
+  test('Mixin ctor gets invoked', function(done) {
     var Child = inher.extend(function() {
       this.a = 1;
     });
@@ -27,7 +21,7 @@ suite('3.3 Mixins tests', function() {
 
     var child = new Child();
   });
-  test('3.3.1.2 Instance shares same context with mixin', function() {
+  test('Instance shares same context with mixin', function() {
     var Child = inher.extend(function() {
       this.a = 1;
     });
@@ -42,7 +36,7 @@ suite('3.3 Mixins tests', function() {
     assert.equal(child.b, 2);
   });
 
-  test('3.3.2 Ctor passes the mixin', function() {
+  test('Ctor passes the mixin', function() {
     var Child = inher.extend(function() {
       this.a = 1;
     });
@@ -63,7 +57,7 @@ suite('3.3 Mixins tests', function() {
     assert.equal(grandChild.b, 2);
     assert.equal(grandChild.c, 3);
   });
-  test('3.3.3.2 mixin invokes ctors in the right order', function() {
+  test('mixin invokes ctors in the right order', function() {
     var spyChild = sinon.spy();
     var spyMixinOne = sinon.spy();
     var spyMixinTwo = sinon.spy();
@@ -88,7 +82,7 @@ suite('3.3 Mixins tests', function() {
     assert.ok(spyChild.calledBefore(spyGrandChild), 'spyChild() before spyGrandChild()');
   });
 
-  test('3.3.3.2.1 Complex Mixin Constructors are invoked in the expected order', function() {
+  test('Complex Mixin Constructors are invoked in the expected order', function() {
     var spyOne = sinon.spy();
     var spyTwo = sinon.spy();
     var spyThree = sinon.spy();
@@ -135,7 +129,7 @@ suite('3.3 Mixins tests', function() {
   });
 
 
-  test('3.3.3.3 mixin ctors share the same context', function() {
+  test('mixin ctors share the same context', function() {
     var Child = inher.extend(function() {
       this.a = 1;
     });
@@ -158,7 +152,7 @@ suite('3.3 Mixins tests', function() {
     assert.equal(grandChild.d, 4);
     assert.equal(grandChild.e, 5);
   });
-  test('3.3.4 mixin accepts comma separated ctors', function() {
+  test('mixin accepts comma separated ctors', function() {
     var Child = inher.extend(function() {
       this.a = 1;
     });
@@ -181,7 +175,7 @@ suite('3.3 Mixins tests', function() {
     assert.equal(grandChild.d, 4);
     assert.equal(grandChild.e, 5);
   });
-  test('3.3.5 We can interact with the Mixin this object', function() {
+  test('We can interact with the Mixin this object', function() {
     var Child = inher.extend(function() {
       this.a += 1;
     });
@@ -196,7 +190,7 @@ suite('3.3 Mixins tests', function() {
   });
 
 
-  test('3.3.10 Mixin prototype methods get passed down the chain', function() {
+  test('Mixin prototype methods get passed down the chain', function() {
     var Child = inher.extend(function() {
       this.a = 1;
     });
