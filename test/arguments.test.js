@@ -11,12 +11,6 @@ var assert = chai.assert;
 
 var Cip = require('../');
 
-
-
-// The numbering (e.g. 1.1.1) has nothing to do with order
-// The purpose is to provide a unique string so specific tests are
-// run by using the mocha --grep "1.1.1" option.
-
 suite('Constructor arguments tests', function() {
   test('Constructors can accept arguments', function() {
     var Child = Cip.extend(function(arg1, arg2) {
@@ -25,12 +19,12 @@ suite('Constructor arguments tests', function() {
     });
 
     var child = new Child(1, 2);
-    var childSingleton = new Child(3, 4);
+    var childTwo = new Child(3, 4);
 
     assert.equal(child.a, 1);
     assert.equal(child.b, 2);
-    assert.equal(childSingleton.a, 3);
-    assert.equal(childSingleton.b, 4);
+    assert.equal(childTwo.a, 3);
+    assert.equal(childTwo.b, 4);
   });
   test('Constructor arguments can be stubbed by childs', function() {
     var Child = Cip.extend(function(arg1, arg2) {
@@ -43,14 +37,14 @@ suite('Constructor arguments tests', function() {
     });
 
     var grandChild = new GrandChild('lol');
-    var grandChildSingleton = new GrandChild(0);
+    var grandChildTwo = new GrandChild(0);
 
     assert.equal(grandChild.a, 5);
     assert.equal(grandChild.b, 6);
     assert.equal(grandChild.c, 'lol');
-    assert.equal(grandChildSingleton.a, 5);
-    assert.equal(grandChildSingleton.b, 6);
-    assert.equal(grandChildSingleton.c, 0);
+    assert.equal(grandChildTwo.a, 5);
+    assert.equal(grandChildTwo.b, 6);
+    assert.equal(grandChildTwo.c, 0);
   });
   test('2 Constructor arguments can be partially stubbed by childs', function() {
     var Child = Cip.extend(function(arg1, arg2) {
@@ -63,14 +57,14 @@ suite('Constructor arguments tests', function() {
     });
 
     var grandChild = new GrandChild(9, 'lol');
-    var grandChildSingleton = new GrandChild(8, 0);
+    var grandChildTwo = new GrandChild(8, 0);
 
     assert.equal(grandChild.a, 5);
     assert.equal(grandChild.b, 9);
     assert.equal(grandChild.c, 'lol');
-    assert.equal(grandChildSingleton.a, 5);
-    assert.equal(grandChildSingleton.b, 8);
-    assert.equal(grandChildSingleton.c, 0);
+    assert.equal(grandChildTwo.a, 5);
+    assert.equal(grandChildTwo.b, 8);
+    assert.equal(grandChildTwo.c, 0);
   });
 
   test('3 Constructor arguments can be compositevely stubbed by childs', function() {
@@ -87,14 +81,14 @@ suite('Constructor arguments tests', function() {
     var GreatGrandChild = GrandChild.extend(6);
 
     var greatGrandChild = new GreatGrandChild('lol');
-    var greatGrandChildSingleton = new GreatGrandChild(0);
+    var greatGrandChildTwo = new GreatGrandChild(0);
 
     assert.equal(greatGrandChild.a, 5);
     assert.equal(greatGrandChild.b, 6);
     assert.equal(greatGrandChild.c, 'lol');
-    assert.equal(greatGrandChildSingleton.a, 5);
-    assert.equal(greatGrandChildSingleton.b, 6);
-    assert.equal(greatGrandChildSingleton.c, 0);
+    assert.equal(greatGrandChildTwo.a, 5);
+    assert.equal(greatGrandChildTwo.b, 6);
+    assert.equal(greatGrandChildTwo.c, 0);
   });
 
 
@@ -109,17 +103,17 @@ suite('Constructor arguments tests', function() {
     });
 
     var grandChild = new GrandChild('lol');
-    var grandChildSingleton = new GrandChild(0);
+    var grandChildTwo = new GrandChild(0);
 
     assert.isFunction(grandChild.a);
     grandChild.a();
     assert.equal(grandChild.b, 7);
     assert.equal(grandChild.c, 'lol');
-    assert.isFunction(grandChildSingleton.a);
-    grandChildSingleton.a();
-    grandChildSingleton.a();
-    assert.equal(grandChildSingleton.b, 8);
-    assert.equal(grandChildSingleton.c, 0);
+    assert.isFunction(grandChildTwo.a);
+    grandChildTwo.a();
+    grandChildTwo.a();
+    assert.equal(grandChildTwo.b, 8);
+    assert.equal(grandChildTwo.c, 0);
   });
   test('Constructor stubbed arguments can omit ctor', function() {
     var Child = Cip.extend(function(arg1, arg2) {
@@ -130,16 +124,14 @@ suite('Constructor arguments tests', function() {
     var GrandChild = Child.extend(function(){this.b++;}, 6);
 
     var grandChild = new GrandChild();
-    var grandChildSingleton = new GrandChild();
+    var grandChildTwo = new GrandChild();
 
     assert.isFunction(grandChild.a);
     grandChild.a();
     assert.equal(grandChild.b, 7);
-    assert.isFunction(grandChildSingleton.a);
-    grandChildSingleton.a();
-    grandChildSingleton.a();
-    assert.equal(grandChildSingleton.b, 8);
+    assert.isFunction(grandChildTwo.a);
+    grandChildTwo.a();
+    grandChildTwo.a();
+    assert.equal(grandChildTwo.b, 8);
   });
-
-
 });

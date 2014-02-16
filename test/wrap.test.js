@@ -29,7 +29,7 @@ suite('Wrap tests', function() {
     var CipTypicalCtor = Cip.wrap(TypicalCtor);
     assert.ok(Cip.is(CipTypicalCtor));
     assert.isFunction(CipTypicalCtor.extend, 'CipTypicalCtor should have an "extend" static method');
-    assert.isFunction(CipTypicalCtor.getInstance, 'CipTypicalCtor should have a "getInstance" static method');
+    assert.isFunction(CipTypicalCtor.extendSingleton, 'CipTypicalCtor should have a "extendSingleton" static method');
     assert.notProperty(CipTypicalCtor, 'wrap', 'CipTypicalCtor should *not* have a "wrap" static method');
     assert.notProperty(CipTypicalCtor, 'is', 'CipTypicalCtor should *not* have a "is" static method');
   });
@@ -37,7 +37,8 @@ suite('Wrap tests', function() {
     var CipTypicalCtor = Cip.wrap(TypicalCtor);
     var Child = CipTypicalCtor.extend();
 
-    assert.instanceOf(Child.getInstance(), TypicalCtor);
+    var child = new Child();
+    assert.instanceOf(child, TypicalCtor);
   });
   test('Wrapping constructors does not mutate original Ctor', function() {
     var CipTypicalCtor = Cip.wrap(TypicalCtor);
