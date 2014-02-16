@@ -63,31 +63,6 @@ suite('3.3 Mixins tests', function() {
     assert.equal(grandChild.b, 2);
     assert.equal(grandChild.c, 3);
   });
-  test('3.3.3 mixin accepts an array of ctors', function() {
-    var spyChild = sinon.spy();
-    var spyMixinOne = sinon.spy();
-    var spyMixinTwo = sinon.spy();
-    var spyMixinThree = sinon.spy();
-    var spyGrandChild = sinon.spy();
-
-    var Child = inher.extend(spyChild);
-
-    var ChildToMixin = inher.extend(spyMixinOne);
-    var ChildToMixinTwo = inher.extend(spyMixinTwo);
-    var ChildToMixinThree = inher.extend(spyMixinThree);
-
-    Child.mixin([ChildToMixin, ChildToMixinTwo, ChildToMixinThree]);
-
-    var GrandChild = Child.extend(spyGrandChild);
-
-    var grandChild = new GrandChild();
-
-    assert.ok(spyChild.calledOnce, 'spyChild should be called only once. Was Called:' + spyChild.callCount);
-    assert.ok(spyMixinOne.calledOnce, 'spyMixinOne should be called only once. Was Called:' + spyMixinOne.callCount);
-    assert.ok(spyMixinTwo.calledOnce, 'spyMixinTwo should be called only once. Was Called:' + spyMixinTwo.callCount);
-    assert.ok(spyMixinThree.calledOnce, 'spyMixinThree should be called only once. Was Called:' + spyMixinThree.callCount);
-    assert.ok(spyGrandChild.calledOnce, 'spyGrandChild should be called only once. Was Called:' + spyGrandChild.callCount);
-  });
   test('3.3.3.2 mixin invokes ctors in the right order', function() {
     var spyChild = sinon.spy();
     var spyMixinOne = sinon.spy();
@@ -101,7 +76,7 @@ suite('3.3 Mixins tests', function() {
     var ChildToMixinTwo = inher.extend(spyMixinTwo);
     var ChildToMixinThree = inher.extend(spyMixinThree);
 
-    Child.mixin([ChildToMixin, ChildToMixinTwo, ChildToMixinThree]);
+    Child.mixin(ChildToMixin, ChildToMixinTwo, ChildToMixinThree);
 
     var GrandChild = Child.extend(spyGrandChild);
 
@@ -141,7 +116,7 @@ suite('3.3 Mixins tests', function() {
     var GreatGrandChild = GrandChild.extend(spyThree);
 
     var GreatGreatGrandChild = GreatGrandChild.extend(spyFour);
-    GreatGreatGrandChild.mixin([MixinFour, MixinFive]);
+    GreatGreatGrandChild.mixin(MixinFour, MixinFive);
 
     var GreatGreatGreatGrandChild = GreatGreatGrandChild.extend(spyFive);
 
@@ -169,7 +144,7 @@ suite('3.3 Mixins tests', function() {
     var ChildToMixinTwo = inher.extend(function() {this.c = 3;});
     var ChildToMixinThree = inher.extend(function() {this.d = 4;});
 
-    Child.mixin([ChildToMixin, ChildToMixinTwo, ChildToMixinThree]);
+    Child.mixin(ChildToMixin, ChildToMixinTwo, ChildToMixinThree);
 
     var GrandChild = Child.extend(function() {
       this.e = 5;
