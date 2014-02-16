@@ -1,23 +1,25 @@
-# Inher
+# CIP
+
+> Classical Inheritance Pattern at its best!
 
 Provides `.extend()` convenience function with argument stubbing, always retaining the prototypal inheritance chain making `instanceof` work.
 
-[![Build Status](https://travis-ci.org/thanpolas/inher.png?branch=master)](https://travis-ci.org/thanpolas/inher)
+[![Build Status](https://travis-ci.org/thanpolas/cip.png?branch=master)](https://travis-ci.org/thanpolas/cip)
 
 ## Installation
 
 ```shell
-npm install inher --save
+npm install cip --save
 ```
 
 
 ## Quick Start
 
 ```javascript
-var inher = require('inher');
+var cip = require('cip');
 
 // Create a child from the base Constructor.
-var Child = inher.extend();
+var Child = cip.extend();
 
 Child.prototype.add = function(a, b) {
   return a + b;
@@ -42,9 +44,9 @@ console.log(grandChild.getAddition());
 
 ## API
 
-### extend() Creates new children
+### extend() Create a new Constructor
 
-> inher.extend(...args=, Constructor=)
+> cip.extend(...args=, Constructor=)
 
 * **...args=** `Any Type` *Optional* :: Any number of any type of arguments to use for stubbing the Parent Constructor. This is an advanced topic, more on that at [Stubbed Arguments](#argument-stubbing-with-extend).
 * **Constructor=** `Function` *Optional* :: Optionally pass a Constructor.
@@ -52,7 +54,7 @@ console.log(grandChild.getAddition());
 
 Extend will create a new Constructor that inherits from the Ctor it was called from. Optionally you can define your own Constructor that will get invoked as expected on every new instantiation.
 
-Extend uses the Pseudo Classical [pattern][addy.proto], the same exact mechanism that is used by [`util.inherits`][util.inherits].
+Extend uses the Classical pattern for inheritance optimized by flat prototype cloning using `Object.create()`.
 
 [Check out the tests relating to `extend()` and inheritance.][test.inheritance]
 
@@ -67,7 +69,7 @@ Argument Stubbing is providing arguments to the `extend()` function with the int
 ##### base.model.js
 
 ```js
-var Model = inher.extend(function(name) {
+var Model = cip.extend(function(name) {
   this._modelName = name;
 });
 
@@ -92,9 +94,9 @@ var user = new UserModel('John', 'Doe');
 console.log(user.getName());
 // prints "user"
 ```
-Argument Stubbing can be infinitely nested and inherited, Inher keeps track of each Constructor's Stubbed Arguments and applies them no matter how long the inheritance chain is.
+Argument Stubbing can be infinitely nested and inherited, Cip keeps track of each Constructor's Stubbed Arguments and applies them no matter how long the inheritance chain is.
 
-> **Beware** While Inher does a good job at not confusing passed functions as your Constructor, the last argument of the `extend()` method if it's of type `function` is will always be used as the new constructor.
+> **Beware** While Cip does a good job at not confusing passed functions as your Constructor, the last argument of the `extend()` method if it's of type `function` is will always be used as the new constructor.
 
 ```js
 // can stub arguments without a constructor
@@ -108,7 +110,7 @@ var GreatGrandChild = GrandChild.extend(4, 5, 6, function(){/* ctor */});
 
 #### Constructor Arity is important
 
-Inher uses your constructor's arity to determine the exact amount of arguments to pass. This means that the constructor will get as many arguments as are defined, as long as they are available by the instantiation.
+Cip uses your constructor's arity to determine the exact amount of arguments to pass. This means that the constructor will get as many arguments as are defined, as long as they are available by the instantiation.
 
 [addy.proto]: http://addyosmani.com/resources/essentialjsdesignpatterns/book/#constructorpatternjavascript
 [util.inherits]: http://nodejs.org/docs/latest/api/util.html#util_util_inherits_constructor_superconstructor
@@ -138,16 +140,16 @@ var moderator = new UserModel(UserModel.Type.MODERATOR);
 
 #### Instantiation
 
-The inheritance pattern Inher uses dictates that all instances are created using the `new` keyword.
+The inheritance pattern Cip uses dictates that all instances are created using the `new` keyword.
 
 ```js
 
-var Thing = inher.extend();
+var Thing = cip.extend();
 
 var thing = new Thing();
 ```
 
-Inher itself is a constructor that can be instantiated and has a `prototype` that you can mingle with, but we don't want to go there now, do we? Be responsible.
+Cip itself is a constructor that can be instantiated and has a `prototype` that you can mingle with, but we don't want to go there now, do we? Be responsible.
 
 
 
@@ -155,33 +157,33 @@ Inher itself is a constructor that can be instantiated and has a `prototype` tha
 
 ### mixin() Mixin the prototype of a Constructor
 
-> Ctor.mixin(Constructor, [Ctor, Ctor])
+> Ctor.mixin(...Constructor)
 
-* **Constructor** `...Function|Array.<Function>` :: Any number of Constructors passed as separate arguments or in an Array.
+* **Constructor** `...Function|` :: Any number of Constructors passed as separate arguments.
 * Returns `void` Nothing.
 
 The `mixin()` method will merge the prototype of the mixed in Ctors and ensure their constructors are invoked. The full inheritance chain of a Mixin is honored along with their respective Stubbed Arguments, if any. The Mixin's constructor will be invoked in the same context and therefore you can easily interact with internal properties and methods.
 
 ```js
-var Human = inher.extend(function() {
+var Human = cip.extend(function() {
   this.firstName = null;
   this.lastName = null;
 });
 
-var Woman = inher.extend(function() {
+var Woman = cip.extend(function() {
   this.favoriteColor = null;
 });
 
-var Man = inher.extend(function() {
+var Man = cip.extend(function() {
   this.favoriteChannel = null;
 });
 
-var Developer = inher.extend(function() {
+var Developer = cip.extend(function() {
   this.programmingLanguages = [];
   this.email = null;
 });
 
-var Designer = inher.extend(function() {
+var Designer = cip.extend(function() {
   this.colors = [];
   this.email = null;
 });
@@ -201,15 +203,15 @@ null === Unicorn.favoriteChannel; // true
 Mixin constructors will be invoked before the Constructor that mixed them in, so for the following case:
 
 ```js
-var Core = inher.mixin();
+var Core = cip.extend();
 
 var MixinOne = Core.extend();
-var MixinTwo = inher.extend();
-var MixinThree = inher.extend();
-var MixinFour = inher.extend();
+var MixinTwo = cip.extend();
+var MixinThree = cip.extend();
+var MixinFour = cip.extend();
 
 
-var Child = inher.extend();
+var Child = cip.extend();
 Child.mixin(MixinOne);
 
 var GrandChild = Child.extend();
@@ -230,7 +232,7 @@ When `GreatGrandChild` will be instantiated this will be the sequence of Constru
 7. MixinFour()
 8. GreatGrandChild()
 
-[Check out the Mixins tests](https://github.com/thanpolas/inher/blob/master/test/mixins.test.js)
+[Check out the Mixins tests](https://github.com/thanpolas/cip/blob/master/test/mixins.test.js)
 
 ### getInstance() Get a singleton instance
 
@@ -258,22 +260,22 @@ var userController = UserController.getInstance();
 ```
 
 
-### wrap() Augment a Constructor with Inher helpers
+### wrap() Augment a Constructor with Cip helpers
 
-> inher.wrap(VanillaCtor)
+> cip.wrap(VanillaCtor)
 
 * **VanillaCtor** `Function` :: A vanilla constructor.
-* Returns `Function` :: A clone copy of the VanillaCtor augmented with Inher's static properties and functions.
+* Returns `Function` :: A clone copy of the VanillaCtor augmented with Cip's static properties and functions.
 
-The `wrap()` method is only available from the Inher module, it will add all the static methods that every Inher ctor has. `wrap()` is used by Inher itself to create the new ancestors.
+The `wrap()` method is only available from the Cip module, it will add all the static methods that every Cip ctor has. `wrap()` is used by Cip itself to create the new ancestors.
 
 ```js
 // Use EventEmitter as the base Constructor.
 var EventEmitter = require('events').EventEmitter;
 
-var inher = require('inher');
+var cip = require('cip');
 
-var IeventEmitter = inher.wrap(EventEmitter);
+var IeventEmitter = cip.wrap(EventEmitter);
 
 var Thing = IeventEmitter.extend();
 
@@ -283,28 +285,33 @@ newThing instanceof IeventEmitter; // true
 newThing instanceof EventEmitter; // true
 ```
 
-[Check out the `wrap()` tests](https://github.com/thanpolas/inher/blob/master/test/wrap.test.js)
+[Check out the `wrap()` tests](https://github.com/thanpolas/cip/blob/master/test/wrap.test.js)
 
-### isInher() Determines if a Constructor has Inher properties
+### is() Determines if a Constructor is a product of Cip
 
-> inher.isInher(Ctor)
+> cip.is(Ctor)
 
 * **Ctor** `Function` :: A constructor.
 * Returns `boolean`
 
-The `isInher()` method is only available from the Inher module, it determines if a constructor has Inher properties.
+The `is()` method is only available from the Cip module, it determines if a constructor has cip properties.
 
 ```js
-var inher = require('inher');
+var cip = require('cip');
 
-var Thing = inher.extend();
+var Thing = cip.extend();
 
-inher.isInher(Thing); // true
+cip.is(Thing); // true
 ```
 
 ## Release History
+- **v0.2.0**, *16 Feb 2014*
+    - Renamed package to "cip"
+    - Renamed `isInher()` method to `is()`
+    - Optimizations in all inheritance mechanisms.
+    - Changed argument type signature for `mixin()`, now only accepts multiple Ctors.
 - **v0.1.0**, *7 Feb 2014*
-    - `wrap()` Now does not muttate the Ctor passed.
+    - `wrap()` Now does not mutate the Ctor passed.
     - `getInstance()` will not accept arguments, it's an anti-pattern.
 - **v0.0.3**, *7 Feb 2014*
     - Clear dependencies

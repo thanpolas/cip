@@ -9,15 +9,9 @@ var assert = chai.assert;
 
 // var noop = function(){};
 
-var inher = require('../');
+var Cip = require('../');
 
-
-
-// The numbering (e.g. 1.1.1) has nothing to do with order
-// The purpose is to provide a unique string so specific tests are
-// run by using the mocha --grep "1.1.1" option.
-
-suite('4.1 Wrap tests', function() {
+suite('Wrap tests', function() {
   var TypicalCtor;
   setup(function(){
     TypicalCtor = function () {
@@ -31,25 +25,25 @@ suite('4.1 Wrap tests', function() {
 
   });
 
-  test('4.1.1 Wrap adds all Inher props and methods', function() {
-    var InherTypicalCtor = inher.wrap(TypicalCtor);
-    assert.ok(inher.isInher(InherTypicalCtor));
-    assert.isFunction(InherTypicalCtor.extend, 'InherTypicalCtor should have an "extend" static method');
-    assert.isFunction(InherTypicalCtor.getInstance, 'InherTypicalCtor should have a "getInstance" static method');
-    assert.notProperty(InherTypicalCtor, 'wrap', 'InherTypicalCtor should *not* have a "wrap" static method');
-    assert.notProperty(InherTypicalCtor, 'isInher', 'InherTypicalCtor should *not* have a "isInher" static method');
+  test('Wrap adds all Cip props and methods', function() {
+    var CipTypicalCtor = Cip.wrap(TypicalCtor);
+    assert.ok(Cip.is(CipTypicalCtor));
+    assert.isFunction(CipTypicalCtor.extend, 'CipTypicalCtor should have an "extend" static method');
+    assert.isFunction(CipTypicalCtor.getInstance, 'CipTypicalCtor should have a "getInstance" static method');
+    assert.notProperty(CipTypicalCtor, 'wrap', 'CipTypicalCtor should *not* have a "wrap" static method');
+    assert.notProperty(CipTypicalCtor, 'is', 'CipTypicalCtor should *not* have a "is" static method');
   });
-  test('4.1.2 extending wrapped constructors retains instanceof', function() {
-    var InherTypicalCtor = inher.wrap(TypicalCtor);
-    var Child = InherTypicalCtor.extend();
+  test('extending wrapped constructors retains instanceof', function() {
+    var CipTypicalCtor = Cip.wrap(TypicalCtor);
+    var Child = CipTypicalCtor.extend();
 
     assert.instanceOf(Child.getInstance(), TypicalCtor);
   });
-  test('4.1.3 Wrapping constructors does not mutate original Ctor', function() {
-    var InherTypicalCtor = inher.wrap(TypicalCtor);
-    var Child = InherTypicalCtor.extend();
+  test('Wrapping constructors does not mutate original Ctor', function() {
+    var CipTypicalCtor = Cip.wrap(TypicalCtor);
+    var Child = CipTypicalCtor.extend();
 
     assert.notProperty(TypicalCtor, 'extend');
-    assert.notOk(inher.isInher(TypicalCtor));
+    assert.notOk(Cip.is(TypicalCtor));
   });
 });

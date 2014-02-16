@@ -1,7 +1,7 @@
 /*jshint unused:false */
 /*jshint camelcase:false */
 /**
- * @fileOverview inherritance tests
+ * @fileOverview Cipritance tests
  */
 var chai = require('chai');
 var sinon = require('sinon');
@@ -9,40 +9,34 @@ var assert = chai.assert;
 
 // var noop = function(){};
 
-var inher = require('../');
+var Cip = require('../');
 
-
-
-// The numbering (e.g. 1.1.1) has nothing to do with order
-// The purpose is to provide a unique string so specific tests are
-// run by using the mocha --grep "1.1.1" option.
-
-suite('2.0 Constructor tests', function() {
+suite('Constructor tests', function() {
   setup(function() {});
   teardown(function() {});
 
-  test('2.0.1 Extending with a constructor', function(done) {
-    inher.extend(function() {
+  test('Extending with a constructor', function(done) {
+    Cip.extend(function() {
       done();
     }).getInstance();
   });
-  test('2.0.1.1 Can extend without a ctor', function(){
-    assert.doesNotThrow(inher.extend);
+  test('Can extend without a ctor', function(){
+    assert.doesNotThrow(Cip.extend);
   });
-  test('2.0.2 extend() produces the expected static methods', function() {
-    var Child = inher.extend();
+  test('extend() produces the expected static methods', function() {
+    var Child = Cip.extend();
     assert.isFunction(Child.extend, 'extend');
     assert.isFunction(Child.getInstance, 'getInstance');
     assert.isFunction(Child.mixin, 'mixin');
   });
 
-  test('2.0.3 extend() singleton has a reference to the ctor prototype', function() {
-    var child = inher.extend().getInstance();
-    assert.instanceOf(child, inher);
+  test('extend() singleton has a reference to the ctor prototype', function() {
+    var child = Cip.extend().getInstance();
+    assert.instanceOf(child, Cip);
   });
 
-  test('2.0.6 ctor "this" defined properties are inherrited', function() {
-    var Child = inher.extend(function() {
+  test('ctor "this" defined properties are Ciprited', function() {
+    var Child = Cip.extend(function() {
       this.a = 1;
     });
 
@@ -52,8 +46,8 @@ suite('2.0 Constructor tests', function() {
     assert.equal(grandChild.a, 1);
   });
 
-  test('2.0.7 ctor "this" defined properties have no side-effects', function() {
-    var Child = inher.extend(function(){
+  test('ctor "this" defined properties have no side-effects', function() {
+    var Child = Cip.extend(function(){
       this.a = 1;
       this.obj = {
         b: 2,
@@ -78,18 +72,17 @@ suite('2.0 Constructor tests', function() {
 
 });
 
-
-suite('2.2 inherritance tests', function() {
-  test('2.2.1 static methods are not inherrited', function(){
-    var Child = inher.extend();
+suite('Cipritance tests', function() {
+  test('static methods are not Ciprited', function(){
+    var Child = Cip.extend();
     Child.astaticfn = function(){};
 
     var GrandChild = Child.extend();
 
     assert.notProperty(GrandChild, 'astaticfn');
   });
-  test('2.2.2 prototype methods are inherrited', function() {
-    var Child = inher.extend();
+  test('prototype methods are Ciprited', function() {
+    var Child = Cip.extend();
     Child.prototype.add = function(a, b) { return a + b; };
 
     var GrandChild = Child.extend();
@@ -99,8 +92,8 @@ suite('2.2 inherritance tests', function() {
     assert.equal(grandChild.add(1,1), 2);
   });
 
-  test('2.2.3 getInstance returns the same instance', function() {
-    var Child = inher.extend(function() {
+  test('getInstance returns the same instance', function() {
+    var Child = Cip.extend(function() {
       this.a = 1;
     });
     Child.prototype.add = function(a) { this.a += a; };
@@ -113,20 +106,20 @@ suite('2.2 inherritance tests', function() {
     assert.equal(grandChildCopy.a, 2);
   });
 
-  test('2.2.4 parent ctor is on "super_"', function() {
-    var Child = inher.extend();
+  test('parent ctor is on "super_"', function() {
+    var Child = Cip.extend();
     var GrandChild = Child.extend();
     assert.equal(GrandChild.super_, Child);
   });
 
-  test('2.2.5 Constructors are invoked in the expected order', function() {
+  test('Constructors are invoked in the expected order', function() {
     var spyOne = sinon.spy();
     var spyTwo = sinon.spy();
     var spyThree = sinon.spy();
     var spyFour = sinon.spy();
     var spyFive = sinon.spy();
 
-    var Child = inher.extend(spyOne);
+    var Child = Cip.extend(spyOne);
     var GrandChild = Child.extend(spyTwo);
     var GreatGrandChild = GrandChild.extend(spyThree);
     var GreatGreatGrandChild = GreatGrandChild.extend(spyFour);
