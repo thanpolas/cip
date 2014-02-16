@@ -1,7 +1,7 @@
 /*jshint unused:false */
 /*jshint camelcase:false */
 /**
- * @fileOverview Wrapping tests
+ * @fileOverview Cast tests
  */
 var chai = require('chai');
 var sinon = require('sinon');
@@ -11,7 +11,7 @@ var assert = chai.assert;
 
 var Cip = require('../');
 
-suite('Wrap tests', function() {
+suite('Cast tests', function() {
   var TypicalCtor;
   setup(function(){
     TypicalCtor = function () {
@@ -25,23 +25,23 @@ suite('Wrap tests', function() {
 
   });
 
-  test('Wrap adds all Cip props and methods', function() {
-    var CipTypicalCtor = Cip.wrap(TypicalCtor);
+  test('Cast adds all Cip props and methods', function() {
+    var CipTypicalCtor = Cip.cast(TypicalCtor);
     assert.ok(Cip.is(CipTypicalCtor));
     assert.isFunction(CipTypicalCtor.extend, 'CipTypicalCtor should have an "extend" static method');
     assert.isFunction(CipTypicalCtor.extendSingleton, 'CipTypicalCtor should have a "extendSingleton" static method');
-    assert.notProperty(CipTypicalCtor, 'wrap', 'CipTypicalCtor should *not* have a "wrap" static method');
+    assert.notProperty(CipTypicalCtor, 'cast', 'CipTypicalCtor should *not* have a "cast" static method');
     assert.notProperty(CipTypicalCtor, 'is', 'CipTypicalCtor should *not* have a "is" static method');
   });
   test('extending wrapped constructors retains instanceof', function() {
-    var CipTypicalCtor = Cip.wrap(TypicalCtor);
+    var CipTypicalCtor = Cip.cast(TypicalCtor);
     var Child = CipTypicalCtor.extend();
 
     var child = new Child();
     assert.instanceOf(child, TypicalCtor);
   });
-  test('Wrapping constructors does not mutate original Ctor', function() {
-    var CipTypicalCtor = Cip.wrap(TypicalCtor);
+  test('Casting constructors does not mutate original Ctor', function() {
+    var CipTypicalCtor = Cip.cast(TypicalCtor);
     var Child = CipTypicalCtor.extend();
 
     assert.notProperty(TypicalCtor, 'extend');
