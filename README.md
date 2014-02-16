@@ -58,6 +58,34 @@ Extend uses the Classical pattern for inheritance optimized by flat prototype cl
 
 [Check out the tests relating to `extend()` and inheritance.][test.inheritance]
 
+### extendSingleton() Create a new Singleton Constructor
+
+> cip.extendSingleton(...args=, Constructor=)
+
+* **...args=** `Any Type` *Optional* :: Any number of any type of arguments to use for stubbing the Parent Constructor. This is an advanced topic, more on that at [Stubbed Arguments](#argument-stubbing-with-extend).
+* **Constructor=** `Function` *Optional* :: Optionally pass a Constructor.
+* Returns `Function` A new Constructor.
+
+The `extendSingleton()` has the same behavior as `extend()` with the exception that it follows the Singleton Pattern. The extended Constructor will have an additional static method named `getInstance()` which will always return the same instance.
+
+A Constructor extended with `extendSingleton()` will always return the same instance even if instantiated with the `new` keyword.
+
+```js
+var Ctor = cip.extendSingleton(function() {
+  this.a = 1;
+});
+
+var instance = Ctor.getInstance();
+instance.a++;
+
+var sameInstance = new Ctor();
+sameInstance === instance; // true
+sameInstance.a === instance.a; // true
+```
+
+[Check out the tests relating to `extend()` and inheritance.][test.inheritanceSingleton]
+
+
 ### Custom Constructor and Arguments
 
 Using your own constructor when invoking `extend()` is a good practise for properly initializing your instances. Your constructor may accept any number of arguments as passed on instantiation. All Parent constructors will receive the same exact arguments, unless you use Argument Stubbing...
@@ -118,7 +146,7 @@ Cip uses your constructor's arity to determine the exact amount of arguments to 
 
 #### Static Methods and Properties
 
-Static methods and properties are the ones that are defined on the Constructor directly vs using the `prototype`. Static functions and properties do not get inherited by subsequent children. A good use for static properties is to define consts or enums that relate to your module.
+Static methods and properties are defined on the Constructor directly vs using the `prototype`. Static functions and properties do not get inherited by subsequent children. A good use for static properties is to define consts or enums that relate to your module.
 
 ```js
 var UserModel = Model.extend(function(userType) {
@@ -140,7 +168,7 @@ var moderator = new UserModel(UserModel.Type.MODERATOR);
 
 #### Instantiation
 
-The inheritance pattern Cip uses dictates that all instances are created using the `new` keyword.
+The inheritance pattern Cip uses dictates that all instances are created using the `new` keyword. The obvious exception being Constructors created using `extendSingleton()`.
 
 ```js
 
@@ -149,17 +177,14 @@ var Thing = cip.extend();
 var thing = new Thing();
 ```
 
-Cip itself is a constructor that can be instantiated and has a `prototype` that you can mingle with, but we don't want to go there now, do we? Be responsible.
-
-
-
-[test.inheritance]: https://github.com/thanpolas/inher/blob/master/test/inher-itance.test.js
+[test.inheritance]: https://github.com/thanpolas/cip/blob/master/test/inheritance.test.js
+[test.inheritanceSingleton]: https://github.com/thanpolas/cip/blob/master/test/singleton-inheritance.test.js
 
 ### mixin() Mixin the prototype of a Constructor
 
 > Ctor.mixin(...Constructor)
 
-* **Constructor** `...Function|` :: Any number of Constructors passed as separate arguments.
+* **Constructor** `...Function` :: Any number of Constructors passed as separate arguments.
 * Returns `void` Nothing.
 
 The `mixin()` method will merge the prototype of the mixed in Ctors and ensure their constructors are invoked. The full inheritance chain of a Mixin is honored along with their respective Stubbed Arguments, if any. The Mixin's constructor will be invoked in the same context and therefore you can easily interact with internal properties and methods.
@@ -240,10 +265,10 @@ When `GreatGrandChild` will be instantiated this will be the sequence of Constru
 
 * Returns `Object` An instance of Ctor.
 
-Use the `getInstance()` for getting a singleton of the Constructor.
+Use the `getInstance()` for getting a singleton of the Constructor. This static function is only available to Constructors that where created using `extendSingleton()`.
 
 ```js
-var UserController = Controller.extend(function(app) {
+var UserController = Controller.extendSingleton(function(app) {
   this.app = app;
 });
 
@@ -259,15 +284,14 @@ var UserController = require('../../controllers/user.ctrl');
 var userController = UserController.getInstance();
 ```
 
+### cast() Clone and cast a Vanilla Constructor
 
-### wrap() Augment a Constructor with Cip helpers
-
-> cip.wrap(VanillaCtor)
+> cip.cast(VanillaCtor)
 
 * **VanillaCtor** `Function` :: A vanilla constructor.
 * Returns `Function` :: A clone copy of the VanillaCtor augmented with Cip's static properties and functions.
 
-The `wrap()` method is only available from the Cip module, it will add all the static methods that every Cip ctor has. `wrap()` is used by Cip itself to create the new ancestors.
+The `cast()` method is only available from the Cip module, it will add all the static methods that every Cip ctor has.
 
 ```js
 // Use EventEmitter as the base Constructor.
@@ -275,17 +299,17 @@ var EventEmitter = require('events').EventEmitter;
 
 var cip = require('cip');
 
-var IeventEmitter = cip.wrap(EventEmitter);
+var CeventEmitter = cip.cast(EventEmitter);
 
-var Thing = IeventEmitter.extend();
+var Thing = CeventEmitter.extend();
 
 var newThing = new Thing();
 
-newThing instanceof IeventEmitter; // true
+newThing instanceof CeventEmitter; // true
 newThing instanceof EventEmitter; // true
 ```
 
-[Check out the `wrap()` tests](https://github.com/thanpolas/cip/blob/master/test/wrap.test.js)
+[Check out the `wrap()` tests](https://github.com/thanpolas/cip/blob/master/test/cast.test.js)
 
 ### is() Determines if a Constructor is a product of Cip
 
@@ -306,8 +330,10 @@ cip.is(Thing); // true
 
 ## Release History
 - **v0.2.0**, *16 Feb 2014*
+    - Introduced `extendSingleton()` to explicitly state a Ctor follows the Singleton pattern.
     - Renamed package to "cip"
     - Renamed `isInher()` method to `is()`
+    - Renamed `wrap()` to `cast()`
     - Optimizations in all inheritance mechanisms.
     - Changed argument type signature for `mixin()`, now only accepts multiple Ctors.
 - **v0.1.0**, *7 Feb 2014*
