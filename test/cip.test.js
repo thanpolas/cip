@@ -1,7 +1,7 @@
 var chai = require('chai');
 var assert = chai.assert;
 
-var inher = require('../');
+var Cip = require('../');
 
 /*
   ======== A Handy Little Mocha Reference ========
@@ -34,38 +34,38 @@ teardown(function() {});
 
 suite('API Surface', function() {
   test('Exported Methods', function() {
-    assert.isFunction(inher, 'inher core is a "constructor"');
-    assert.isFunction(inher.extend, 'inher should have an "extend" static method');
-    assert.isFunction(inher.getInstance, 'inher should have a "getInstance" static method');
-    assert.isFunction(inher.isInher, 'inher should have a "isInher" static method');
-    assert.isFunction(inher.wrap, 'inher should have a "wrap" static method');
+    assert.isFunction(Cip, 'Cip core is a "constructor"');
+    assert.isFunction(Cip.extend, 'Cip should have an "extend" static method');
+    assert.isFunction(Cip.getInstance, 'Cip should have a "getInstance" static method');
+    assert.isFunction(Cip.is, 'Cip should have a "is" static method');
+    assert.isFunction(Cip.wrap, 'Cip should have a "wrap" static method');
   });
 });
 
 
-suite('isInher() function', function() {
-  test('identifies core as inher', function() {
-    assert.ok(inher.isInher(inher));
+suite('is() function', function() {
+  test('identifies core as Cip', function() {
+    assert.ok(Cip.is(Cip));
   });
-  test('identifies extended class as inher', function() {
-    var Child = inher.extend();
-    assert.ok(inher.isInher(Child));
+  test('identifies extended class as Cip', function() {
+    var Child = Cip.extend();
+    assert.ok(Cip.is(Child));
   });
-  test('identifies extended class with ctor as inher', function() {
-    var Child = inher.extend(function(){});
-    assert.ok(inher.isInher(Child));
+  test('identifies extended class with ctor as Cip', function() {
+    var Child = Cip.extend(function(){});
+    assert.ok(Cip.is(Child));
   });
-  test('identifies extended classes as inher down 10 levels', function() {
+  test('identifies extended classes as Cip down 10 levels', function() {
     var howDeep = 10;
     function recurse(Parent) {
       var Child = Parent.extend();
-      assert.ok(inher.isInher(Child), 'Child at level ' + howDeep + ' should yield true for inInher()');
+      assert.ok(Cip.is(Child), 'Child at level ' + howDeep + ' should yield true for inCip()');
 
       if (--howDeep) {
         recurse(Child);
       }
     }
-    recurse(inher);
+    recurse(Cip);
   });
 
 });

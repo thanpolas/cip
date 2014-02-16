@@ -9,23 +9,23 @@ var assert = chai.assert;
 
 // var noop = function(){};
 
-var inher = require('../');
+var Cip = require('../');
 
 suite('Mixins tests', function() {
   test('Mixin ctor gets invoked', function(done) {
-    var Child = inher.extend(function() {
+    var Child = Cip.extend(function() {
       this.a = 1;
     });
-    var ChildToMixin = inher.extend(done);
+    var ChildToMixin = Cip.extend(done);
     Child.mixin(ChildToMixin);
 
     var child = new Child();
   });
   test('Instance shares same context with mixin', function() {
-    var Child = inher.extend(function() {
+    var Child = Cip.extend(function() {
       this.a = 1;
     });
-    var ChildToMixin = inher.extend(function() {
+    var ChildToMixin = Cip.extend(function() {
       this.b = 2;
     });
     Child.mixin(ChildToMixin);
@@ -37,11 +37,11 @@ suite('Mixins tests', function() {
   });
 
   test('Ctor passes the mixin', function() {
-    var Child = inher.extend(function() {
+    var Child = Cip.extend(function() {
       this.a = 1;
     });
 
-    var ChildToMixin = inher.extend(function() {
+    var ChildToMixin = Cip.extend(function() {
       this.b = 2;
     });
 
@@ -64,11 +64,11 @@ suite('Mixins tests', function() {
     var spyMixinThree = sinon.spy();
     var spyGrandChild = sinon.spy();
 
-    var Child = inher.extend(spyChild);
+    var Child = Cip.extend(spyChild);
 
-    var ChildToMixin = inher.extend(spyMixinOne);
-    var ChildToMixinTwo = inher.extend(spyMixinTwo);
-    var ChildToMixinThree = inher.extend(spyMixinThree);
+    var ChildToMixin = Cip.extend(spyMixinOne);
+    var ChildToMixinTwo = Cip.extend(spyMixinTwo);
+    var ChildToMixinThree = Cip.extend(spyMixinThree);
 
     Child.mixin(ChildToMixin, ChildToMixinTwo, ChildToMixinThree);
 
@@ -95,13 +95,13 @@ suite('Mixins tests', function() {
     var spyMixinFive = sinon.spy();
 
 
-    var Mixin = inher.extend(spyMixinOne);
-    var MixinTwo = inher.extend(spyMixinTwo);
-    var MixinThree = inher.extend(spyMixinThree);
-    var MixinFour = inher.extend(spyMixinFour);
-    var MixinFive = inher.extend(spyMixinFive);
+    var Mixin = Cip.extend(spyMixinOne);
+    var MixinTwo = Cip.extend(spyMixinTwo);
+    var MixinThree = Cip.extend(spyMixinThree);
+    var MixinFour = Cip.extend(spyMixinFour);
+    var MixinFive = Cip.extend(spyMixinFive);
 
-    var Child = inher.extend(spyOne);
+    var Child = Cip.extend(spyOne);
     Child.mixin(Mixin);
 
     var GrandChild = Child.extend(spyTwo);
@@ -130,13 +130,13 @@ suite('Mixins tests', function() {
 
 
   test('mixin ctors share the same context', function() {
-    var Child = inher.extend(function() {
+    var Child = Cip.extend(function() {
       this.a = 1;
     });
 
-    var ChildToMixin = inher.extend(function() {this.b = 2;});
-    var ChildToMixinTwo = inher.extend(function() {this.c = 3;});
-    var ChildToMixinThree = inher.extend(function() {this.d = 4;});
+    var ChildToMixin = Cip.extend(function() {this.b = 2;});
+    var ChildToMixinTwo = Cip.extend(function() {this.c = 3;});
+    var ChildToMixinThree = Cip.extend(function() {this.d = 4;});
 
     Child.mixin(ChildToMixin, ChildToMixinTwo, ChildToMixinThree);
 
@@ -153,13 +153,13 @@ suite('Mixins tests', function() {
     assert.equal(grandChild.e, 5);
   });
   test('mixin accepts comma separated ctors', function() {
-    var Child = inher.extend(function() {
+    var Child = Cip.extend(function() {
       this.a = 1;
     });
 
-    var ChildToMixin = inher.extend(function() {this.b = 2;});
-    var ChildToMixinTwo = inher.extend(function() {this.c = 3;});
-    var ChildToMixinThree = inher.extend(function() {this.d = 4;});
+    var ChildToMixin = Cip.extend(function() {this.b = 2;});
+    var ChildToMixinTwo = Cip.extend(function() {this.c = 3;});
+    var ChildToMixinThree = Cip.extend(function() {this.d = 4;});
 
     Child.mixin(ChildToMixin, ChildToMixinTwo, ChildToMixinThree);
 
@@ -176,11 +176,11 @@ suite('Mixins tests', function() {
     assert.equal(grandChild.e, 5);
   });
   test('We can interact with the Mixin this object', function() {
-    var Child = inher.extend(function() {
+    var Child = Cip.extend(function() {
       this.a += 1;
     });
 
-    var ChildToMixin = inher.extend(function() {
+    var ChildToMixin = Cip.extend(function() {
       this.a = 1;
     });
 
@@ -191,11 +191,11 @@ suite('Mixins tests', function() {
 
 
   test('Mixin prototype methods get passed down the chain', function() {
-    var Child = inher.extend(function() {
+    var Child = Cip.extend(function() {
       this.a = 1;
     });
 
-    var ChildToMixin = inher.extend();
+    var ChildToMixin = Cip.extend();
     ChildToMixin.prototype.add = function(a, b) {
       return a + b;
     };

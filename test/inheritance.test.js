@@ -1,7 +1,7 @@
 /*jshint unused:false */
 /*jshint camelcase:false */
 /**
- * @fileOverview inherritance tests
+ * @fileOverview Cipritance tests
  */
 var chai = require('chai');
 var sinon = require('sinon');
@@ -9,34 +9,34 @@ var assert = chai.assert;
 
 // var noop = function(){};
 
-var inher = require('../');
+var Cip = require('../');
 
 suite('Constructor tests', function() {
   setup(function() {});
   teardown(function() {});
 
   test('Extending with a constructor', function(done) {
-    inher.extend(function() {
+    Cip.extend(function() {
       done();
     }).getInstance();
   });
   test('Can extend without a ctor', function(){
-    assert.doesNotThrow(inher.extend);
+    assert.doesNotThrow(Cip.extend);
   });
   test('extend() produces the expected static methods', function() {
-    var Child = inher.extend();
+    var Child = Cip.extend();
     assert.isFunction(Child.extend, 'extend');
     assert.isFunction(Child.getInstance, 'getInstance');
     assert.isFunction(Child.mixin, 'mixin');
   });
 
   test('extend() singleton has a reference to the ctor prototype', function() {
-    var child = inher.extend().getInstance();
-    assert.instanceOf(child, inher);
+    var child = Cip.extend().getInstance();
+    assert.instanceOf(child, Cip);
   });
 
-  test('ctor "this" defined properties are inherrited', function() {
-    var Child = inher.extend(function() {
+  test('ctor "this" defined properties are Ciprited', function() {
+    var Child = Cip.extend(function() {
       this.a = 1;
     });
 
@@ -47,7 +47,7 @@ suite('Constructor tests', function() {
   });
 
   test('ctor "this" defined properties have no side-effects', function() {
-    var Child = inher.extend(function(){
+    var Child = Cip.extend(function(){
       this.a = 1;
       this.obj = {
         b: 2,
@@ -72,17 +72,17 @@ suite('Constructor tests', function() {
 
 });
 
-suite('inherritance tests', function() {
-  test('static methods are not inherrited', function(){
-    var Child = inher.extend();
+suite('Cipritance tests', function() {
+  test('static methods are not Ciprited', function(){
+    var Child = Cip.extend();
     Child.astaticfn = function(){};
 
     var GrandChild = Child.extend();
 
     assert.notProperty(GrandChild, 'astaticfn');
   });
-  test('prototype methods are inherrited', function() {
-    var Child = inher.extend();
+  test('prototype methods are Ciprited', function() {
+    var Child = Cip.extend();
     Child.prototype.add = function(a, b) { return a + b; };
 
     var GrandChild = Child.extend();
@@ -93,7 +93,7 @@ suite('inherritance tests', function() {
   });
 
   test('getInstance returns the same instance', function() {
-    var Child = inher.extend(function() {
+    var Child = Cip.extend(function() {
       this.a = 1;
     });
     Child.prototype.add = function(a) { this.a += a; };
@@ -107,7 +107,7 @@ suite('inherritance tests', function() {
   });
 
   test('parent ctor is on "super_"', function() {
-    var Child = inher.extend();
+    var Child = Cip.extend();
     var GrandChild = Child.extend();
     assert.equal(GrandChild.super_, Child);
   });
@@ -119,7 +119,7 @@ suite('inherritance tests', function() {
     var spyFour = sinon.spy();
     var spyFive = sinon.spy();
 
-    var Child = inher.extend(spyOne);
+    var Child = Cip.extend(spyOne);
     var GrandChild = Child.extend(spyTwo);
     var GreatGrandChild = GrandChild.extend(spyThree);
     var GreatGreatGrandChild = GreatGrandChild.extend(spyFour);

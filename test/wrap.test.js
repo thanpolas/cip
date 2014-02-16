@@ -9,7 +9,7 @@ var assert = chai.assert;
 
 // var noop = function(){};
 
-var inher = require('../');
+var Cip = require('../');
 
 suite('Wrap tests', function() {
   var TypicalCtor;
@@ -25,25 +25,25 @@ suite('Wrap tests', function() {
 
   });
 
-  test('Wrap adds all Inher props and methods', function() {
-    var InherTypicalCtor = inher.wrap(TypicalCtor);
-    assert.ok(inher.isInher(InherTypicalCtor));
-    assert.isFunction(InherTypicalCtor.extend, 'InherTypicalCtor should have an "extend" static method');
-    assert.isFunction(InherTypicalCtor.getInstance, 'InherTypicalCtor should have a "getInstance" static method');
-    assert.notProperty(InherTypicalCtor, 'wrap', 'InherTypicalCtor should *not* have a "wrap" static method');
-    assert.notProperty(InherTypicalCtor, 'isInher', 'InherTypicalCtor should *not* have a "isInher" static method');
+  test('Wrap adds all Cip props and methods', function() {
+    var CipTypicalCtor = Cip.wrap(TypicalCtor);
+    assert.ok(Cip.isCip(CipTypicalCtor));
+    assert.isFunction(CipTypicalCtor.extend, 'CipTypicalCtor should have an "extend" static method');
+    assert.isFunction(CipTypicalCtor.getInstance, 'CipTypicalCtor should have a "getInstance" static method');
+    assert.notProperty(CipTypicalCtor, 'wrap', 'CipTypicalCtor should *not* have a "wrap" static method');
+    assert.notProperty(CipTypicalCtor, 'is', 'CipTypicalCtor should *not* have a "is" static method');
   });
   test('extending wrapped constructors retains instanceof', function() {
-    var InherTypicalCtor = inher.wrap(TypicalCtor);
-    var Child = InherTypicalCtor.extend();
+    var CipTypicalCtor = Cip.wrap(TypicalCtor);
+    var Child = CipTypicalCtor.extend();
 
     assert.instanceOf(Child.getInstance(), TypicalCtor);
   });
   test('Wrapping constructors does not mutate original Ctor', function() {
-    var InherTypicalCtor = inher.wrap(TypicalCtor);
-    var Child = InherTypicalCtor.extend();
+    var CipTypicalCtor = Cip.wrap(TypicalCtor);
+    var Child = CipTypicalCtor.extend();
 
     assert.notProperty(TypicalCtor, 'extend');
-    assert.notOk(inher.isInher(TypicalCtor));
+    assert.notOk(Cip.isCip(TypicalCtor));
   });
 });
