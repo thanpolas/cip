@@ -329,6 +329,8 @@ cip.is(Thing); // true
 ```
 
 ## Release History
+- **v0.2.1**, *17 Feb 2014*
+    - fix not passing `extendSingleton()` reference properly bug.
 - **v0.2.0**, *17 Feb 2014*
     - Introduced `extendSingleton()` to explicitly state a Ctor follows the Singleton pattern.
     - Renamed package to "cip"
