@@ -53,7 +53,9 @@ suite('Singleton inheritance', function() {
     var LastStop = GrandChildSingleton.extendSingleton(function() {
       assert.equal(this.a, 'alpha');
     });
+
     var grandChildSingleton = GrandChildSingleton.getInstance();
+    GrandChildSingleton.getInstance();
     var lastStop = LastStop.getInstance();
     assert.isFunction(lastStop.add);
     assert.equal(lastStop.add(2), 4);
