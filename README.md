@@ -330,8 +330,9 @@ cip.is(Thing); // true
 
 ## Release History
 
-- **v0.2.2**, *14 Mar 2014*
-    - Fix singleton extending singleton bug
+- **v0.2.3**, *14 Mar 2014*
+    - Fix singleton extending singleton bug.
+    - Updated all required packages to latest.
 - **v0.2.1**, *17 Feb 2014*
     - fix not passing `extendSingleton()` reference properly bug.
 - **v0.2.0**, *17 Feb 2014*
