@@ -38,4 +38,25 @@ suite('Singleton inheritance', function() {
     var GrandChildSingleton = GrandChild.extendSingleton();
     assert.isFunction(GrandChildSingleton.getInstance);
   });
+
+  test('extendSingleton() extended by another extendSingleton()', function() {
+    var Child = Cip.extend();
+    var GrandChild = Child.extend();
+    var GrandChildSingleton = GrandChild.extendSingleton(function() {
+      this.a = 'alpha';
+      this.b = 2;
+    });
+    GrandChildSingleton.prototype.add = function(arg) {
+      return this.b + arg;
+    };
+
+    var LastStop = GrandChildSingleton.extendSingleton(function() {
+      assert.equal(this.a, 'alpha');
+    });
+    var grandChildSingleton = GrandChildSingleton.getInstance();
+    var lastStop = LastStop.getInstance();
+    assert.isFunction(lastStop.add);
+    assert.equal(lastStop.add(2), 4);
+  });
+
 });
