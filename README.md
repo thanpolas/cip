@@ -330,7 +330,7 @@ cip.is(Thing); // true
 
 ## Release History
 
-- **v0.2.3**, *14 Mar 2014*
+- **v0.2.4**, *14 Mar 2014*
     - Fix singleton extending singleton bug.
     - Updated all required packages to latest.
 - **v0.2.1**, *17 Feb 2014*
