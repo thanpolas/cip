@@ -119,6 +119,5 @@
     "after": false,
     "afterEach": false,
     "teardown": false,
-    "assert": false
   }
 }
