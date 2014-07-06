@@ -330,6 +330,8 @@ cip.is(Thing); // true
 
 ## Release History
 
+- **v0.2.5**, *06 Jul 2014*
+    - Now supports returning custom objects from constructors.
 - **v0.2.4**, *14 Mar 2014*
     - Fix singleton extending singleton bug.
     - Updated all required packages to latest.
