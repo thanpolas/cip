@@ -224,3 +224,30 @@ suite('Mixins Typical Inheritance', function() {
 suite('Mixins Singleton Inheritance', function() {
   registerTests('extendSingleton', false);
 });
+
+suite('Mixins edge cases', function() {
+  suite('Ctor Properties used by mixins', function() {
+    setup(function() {
+      this.Mixin = Cip.extend();
+      this.Mixin.prototype.run = function() {
+        return this.prop;
+      };
+
+      this.Base = Cip.extend(function() {
+        this.prop = {
+          a: 1,
+        };
+      });
+      this.Base.mixin(this.Mixin);
+
+      this.BaseExtend = this.Base.extend(function() {
+        this.prop.b = 2;
+      });
+    });
+
+    test('Prop should be correctly propagated', function() {
+      var baseExtend = new this.BaseExtend();
+      assert.equal(baseExtend.prop.b, 2);
+    });
+  });
+});
