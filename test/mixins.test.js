@@ -247,7 +247,7 @@ suite('Mixins edge cases', function() {
 
     test('Prop should be correctly propagated', function() {
       var baseExtend = new this.BaseExtend();
-      assert.equal(baseExtend.prop.b, 2);
+      assert.equal(baseExtend.run().b, 2);
     });
   });
 });
