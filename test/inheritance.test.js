@@ -68,6 +68,15 @@ function registerTests(extendMethod, singleton) {
       assert.equal(child.a, 3);
       assert.equal(child.obj.b, 6);
     });
+
+    test('Ctor will get correct signature in exceptions', function() {
+      var child = Cip.extend();
+      try {
+        child.go();
+      } catch(ex) {
+        assert.equal(ex.message, 'Object CIP has no method \'go\'');
+      }
+    });
   });
 
 
