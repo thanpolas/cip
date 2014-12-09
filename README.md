@@ -330,6 +330,9 @@ cip.is(Thing); // true
 
 ## Release History
 
+- **v1.0.0**, *09 Dec 2014*
+    - Honorary jump, the CIP API is stable and battle tested for over a year.
+    - Cip children will now properly report their name on exception cases.
 - **v0.2.5**, *06 Jul 2014*
     - Now supports returning custom objects from constructors.
 - **v0.2.4**, *14 Mar 2014*
