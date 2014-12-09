@@ -227,6 +227,7 @@ suite('Mixins Singleton Inheritance', function() {
 
 suite('Mixins edge cases', function() {
   suite('Ctor Properties used by mixins', function() {
+    var middlewarify = require('middlewarify');
     setup(function() {
       this.Mixin = Cip.extend();
       this.Mixin.prototype.run = function() {
@@ -237,6 +238,8 @@ suite('Mixins edge cases', function() {
         this.prop = {
           a: 1,
         };
+
+        middlewarify.make(this, 'ron', this.run.bind(this));
       });
       this.Base.mixin(this.Mixin);
 
@@ -245,9 +248,12 @@ suite('Mixins edge cases', function() {
       });
     });
 
-    test('Prop should be correctly propagated', function() {
+    test('Prop should be correctly propagated', function(done) {
       var baseExtend = new this.BaseExtend();
-      assert.equal(baseExtend.run().b, 2);
+      baseExtend.ron().then(function(prop) {
+        assert.equal(prop.b, 2);
+        done();
+      });
     });
   });
 });
