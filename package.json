@@ -1,7 +1,7 @@
 {
   "name": "cip",
   "version": "1.0.0",
-  "main": "./",
+  "main": "index.js",
   "description": "Classical Inheritance Pattern at its best",
   "homepage": "https://github.com/thanpolas/cip",
   "bugs": "https://github.com/thanpolas/cip/issues",
