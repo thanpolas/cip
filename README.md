@@ -330,6 +330,8 @@ cip.is(Thing); // true
 
 ## Release History
 
+- **v1.0.1**, *29 Jun 2016*
+    - Fix entry point on package.json so webpack won't break [#5](https://github.com/thanpolas/cip/pull/5) - thank you [lrojas94](https://github.com/lrojas94).
 - **v1.0.0**, *09 Dec 2014*
     - Honorary jump, the CIP API is stable and battle tested for over a year.
     - Cip children will now properly report their name on exception cases.
